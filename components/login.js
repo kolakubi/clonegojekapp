@@ -6,14 +6,19 @@ import logoSembako from '../assets/logo-paketsembako.png';
 export default class Login extends Component{
 
     login = () => {
-        alert('login');
+        this.props.navigation.navigate('beranda');
     }
 
     daftar = () => {
-        alert('daftar');
+        this.props.navigation.navigate('daftar');
+    }
+
+    lupaAkun = () => {
+        this.props.navigation.navigate('lupaAkun');
     }
 
     render(){
+
         return(
             <View style={{flex: 1}}>
         
@@ -30,7 +35,7 @@ export default class Login extends Component{
 
                 <View style={{height: 20}}></View>
 
-                <TouchableOpacity style={{borderRadius:20, backgroundColor: "#75d470", padding: 10}} onPress={this.daftar}>
+                <TouchableOpacity style={{borderRadius:20, backgroundColor: "#75d470", padding: 10}} onPress={() => this.daftar()}>
                     <Text style={{textAlign: "center", color: "#fff", fontSize: 16, fontWeight: "bold"}}>Daftar</Text>
                 </TouchableOpacity>
 
@@ -40,7 +45,7 @@ export default class Login extends Component{
 
 
             <View style={{height: 40}}>
-            <TouchableOpacity style={{padding: 10}}>
+            <TouchableOpacity style={{padding: 10}} onPress={this.lupaAkun}>
                 <Text style={{color: "#ff7143", fontSize: 18, fontWeight: "bold"}}>Lupa Password?</Text>
             </TouchableOpacity>
             </View>
