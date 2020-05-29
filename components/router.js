@@ -7,28 +7,19 @@ import Login from './login';
 import LupaAkun from './lupaAkun';
 import Daftar from './daftar';
 import Beranda from './beranda';
-
-// const Stack = createStackNavigator({
-    
-//     LupaAkun: {
-//         screen: LupaAkun
-//     }
-// });
-
-// const Router = createAppContainer(Stack)
-
-// export default Router;
+import Cart from './cart';
 
 const Stack = createStackNavigator();
 
 export default class Router extends Component{
     render(){
         return(
-            <Stack.Navigator>
-                <Stack.Screen name="login" component={Login} />
+            <Stack.Navigator initialRouteName="login">
+                <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
                 <Stack.Screen name="beranda" component={Beranda} />
                 <Stack.Screen name="daftar" component={Daftar} />
                 <Stack.Screen name="lupaAkun" component={LupaAkun} />
+                <Stack.Screen name="cart" component={Cart} />
             </Stack.Navigator>
         )
     }

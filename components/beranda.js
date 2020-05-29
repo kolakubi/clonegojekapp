@@ -8,6 +8,11 @@ import bannerUtama from '../assets/banner-1.png';
 import ItemProduk from './itemProduk';
 
 export default class Beranda extends Component{
+
+    cart = () => {
+        this.props.navigation.navigate('cart');
+    }
+
     render(){
         return(
 
@@ -60,13 +65,13 @@ export default class Beranda extends Component{
                     </View>
                 </ScrollView>
 
-                <TouchableOpacity style={{height: 70, width: "100%", backgroundColor: "#000", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}}>
+                <TouchableOpacity style={{height: 50, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} onPress={this.cart}>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: 16, color: "white"}}>1 Items | Rp 11.000</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>1 Items | Rp 11.000</Text>
                     </View>
                     
                     <View >
-                        <Text style={{fontWeight: "bold", fontSize: 16, color: "white"}}>Cart</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>Cart</Text>
                     </View>
                 </TouchableOpacity>
 
