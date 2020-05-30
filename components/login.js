@@ -87,7 +87,7 @@ export default class Login extends Component{
 
                 <TouchableOpacity 
                     style={{borderRadius:20, backgroundColor: "#ff7143", padding: 10}} 
-                    onPress={this.login}>
+                    onPress={this.loginSukses}>
                     <Text 
                         style={{textAlign: "center", color: "#fff", fontSize: 16, fontWeight: "bold"}}>Login
                     </Text>

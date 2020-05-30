@@ -5,6 +5,17 @@ import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import bannerUtama from '../assets/banner-1.png';
+import menuIcon from '../assets/icon/menu-icon.png';
+import bellIcon from '../assets/icon/bell-icon.png';
+import rekomendasiIcon from '../assets/icon/rekomendasi-icon.png';
+import transaksiIcon from '../assets/icon/transaksi-icon.png';
+import whatsappIcon from '../assets/icon/whatsapp-icon.png';
+
+// DUMMY PRODUK
+import produkTelur from '../assets/produk/produk-telur.png';
+import produkTepung from '../assets/produk/produk-tepung.png';
+import produkMinyak from '../assets/produk/produk-minyak-goreng-vipco.png';
+
 import ItemProduk from './itemProduk';
 
 export default class Beranda extends Component{
@@ -20,43 +31,47 @@ export default class Beranda extends Component{
                 <ScrollView>
                     <View style={{alignItems: "center"}}>
 
-                        <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "grey", borderBottomWidth: 0.5}}>
+                        {/* HEADER */}
+                        <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "grey", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
-                            <TouchableOpacity style={{width: 60}}>
-                                <Text style={{color: "#ff7143", fontWeight: "bold", fontSize: 20, textAlign: "center"}}>Menu</Text>
+                            <TouchableOpacity style={{marginLeft: 15, height: 40, width: 40}}>
+                                <Image source={menuIcon} style={{resizeMode: "contain", width: "100%"}} />
                             </TouchableOpacity>
 
-                            <Image source={logoSembako} style={{width: 190}} />
+                            <Image source={logoSembako} style={{resizeMode: "contain"}} />
 
-                            <TouchableOpacity style={{width: 60}}>
-                                <Text style={{color: "#ff7143", fontWeight: "bold", fontSize: 20, textAlign: "center"}}>Cart</Text>
+                            <TouchableOpacity style={{marginRight: 15, height: 40, width: 40}}>
+                                <Image source={bellIcon} style={{resizeMode: "contain", width: "100%"}} />
                             </TouchableOpacity>
                         </View>
 
+                        {/* BANNER */}
                         <View style={{height: 195, width: "95%"}}>
-                            <Image source={bannerUtama} style={{maxHeight: "100%", maxWidth: "100%"}}  />
+                            <Image source={bannerUtama} style={{resizeMode: "contain", maxWidth: "100%"}}  />
                         </View>
 
-                        <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderEndColor: "grey", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around"}}>
+                        {/* MIDDLE SECTION */}
+                        <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderEndColor: "grey", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <View style={{width: 50, height: 50, backgroundColor: "pink"}}></View>
+                                <Image source={transaksiIcon} style={{resizeMode: "contain", width: "100%"}} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Transaksi</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <View style={{width: 50, height: 50, backgroundColor: "pink"}}></View>
+                                <Image source={rekomendasiIcon} style={{resizeMode: "contain", width: "100%"}} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Rekomendasi</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <View style={{width: 50, height: 50, backgroundColor: "pink"}}></View>
+                                <Image source={whatsappIcon} style={{resizeMode: "contain", width: "100%"}} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <ItemProduk judul="Telur Ayam Kampung 6 Butir" harga="Rp 22.000" />
-                        <ItemProduk judul="Tepung Rose Brand 1kg" harga="Rp 17.000" />
-                        <ItemProduk judul="Beras Premium 5kg" harga="Rp 57.500" />
+                        {/* PRODUK */}
+                        <ItemProduk judul="Telur Ayam Kampung 6 Butir" harga="Rp 22.000" image={produkTelur} />
+                        <ItemProduk judul="Tepung Rose Brand 1kg" harga="Rp 17.000" image={produkTepung} />
+                        <ItemProduk judul="Minyak Goreng Vipco 1lt" harga="Rp 10.500" image={produkMinyak} />
 
                         
 

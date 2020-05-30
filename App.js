@@ -14,9 +14,6 @@ class App extends Component{
       <NavigationContainer>
         <Router />
       </NavigationContainer>
-      // <View style={{flex: 1}}>
-      //   <Cart />
-      // </View>
     )
   }
 }
