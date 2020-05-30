@@ -20,14 +20,44 @@ import ItemProduk from './itemProduk';
 
 export default class Beranda extends Component{
 
-    cart = () => {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            cart: {
+                jumlahItem: 0,
+                JumlahPembelian: 0,
+                detailItem: []
+            }
+        }
+    }
+
+    tambahItem = (data) => {
+
+        // filter item
+        // jika item sdh ada update item array
+        // jika belum ada, push item
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                jumlahItem: (this.state.cart.jumlahItem+=1),
+                JumlahPembelian: (this.state.cart.JumlahPembelian+=data[2]),
+                detailitem: this.state.cart.detailItem.push(data)
+            }
+
+        });
+
+        //console.log(this.state.cart);
+    }
+
+    navigationToCart = () => {
         this.props.navigation.navigate('cart');
     }
 
     render(){
         return(
 
-            <View>
+            <View style={{backgroundColor: "#fff"}}>
                 <ScrollView>
                     <View style={{alignItems: "center"}}>
 
@@ -53,25 +83,45 @@ export default class Beranda extends Component{
                         {/* MIDDLE SECTION */}
                         <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderEndColor: "grey", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <Image source={transaksiIcon} style={{resizeMode: "contain", width: "100%"}} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Transaksi</Text>
+                                <Image source={transaksiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Transaksi</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <Image source={rekomendasiIcon} style={{resizeMode: "contain", width: "100%"}} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Rekomendasi</Text>
+                                <Image source={rekomendasiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Rekomendasi</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{alignItems:"center"}}>
-                                <Image source={whatsappIcon} style={{resizeMode: "contain", width: "100%"}} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 16, textAlign: "center"}}>Pesan</Text>
+                                <Image source={whatsappIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* PRODUK */}
-                        <ItemProduk judul="Telur Ayam Kampung 6 Butir" harga="Rp 22.000" image={produkTelur} />
-                        <ItemProduk judul="Tepung Rose Brand 1kg" harga="Rp 17.000" image={produkTepung} />
-                        <ItemProduk judul="Minyak Goreng Vipco 1lt" harga="Rp 10.500" image={produkMinyak} />
+                        <ItemProduk
+                            id="1"
+                            judul="Telur Ayam Kampung 6 Butir" 
+                            harga="Rp 22.000" 
+                            image={produkTelur}
+                            tambah={()=>this.tambahItem(['1', 'Telur Ayam Kampung 6 Butir', 22000])}
+                        />
+
+                        <ItemProduk
+                            id="2"
+                            judul="Tepung Rose Brand 1kg" 
+                            harga="Rp 17.000" 
+                            image={produkTepung} 
+                            tambah={()=>this.tambahItem(['2', 'Tepung Rose Brand 1kg', 17000])}
+                        />
+
+                        <ItemProduk
+                            id="3"
+                            judul="Minyak Goreng Vipco 1lt" 
+                            harga="Rp 10.500" 
+                            image={produkMinyak} 
+                            tambah={()=>this.tambahItem(['3', 'Minyak Goreng Vipco 1lt', 10500])}
+                        />
 
                         
 
@@ -80,9 +130,10 @@ export default class Beranda extends Component{
                     </View>
                 </ScrollView>
 
-                <TouchableOpacity style={{height: 50, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} onPress={this.cart}>
+                {/* FLOAT BOTTOM CART */}
+                <TouchableOpacity style={{height: 50, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} onPress={this.navigationToCart}>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>1 Items | Rp 11.000</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>{this.state.cart.jumlahItem} Items | Rp {this.state.cart.JumlahPembelian}</Text>
                     </View>
                     
                     <View >

@@ -10,12 +10,12 @@ export default class LupaAkun extends Component{
 
     render(){
         return(
-            <View style={{flex: 1}}>
-                <View>
+            <View style={{flex: 1, backgroundColor: "#fff"}}>
+                {/* <View>
                     <TouchableOpacity style={{padding: 15, width: 100}}>
                         <Text style={{color: "#ff7143", fontWeight: "bold", fontSize: 20}}>Back</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View style={{flex: 1}}></View>
 
