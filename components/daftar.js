@@ -11,11 +11,6 @@ export default class Daftar extends Component{
     render(){
         return(
             <View style={{flex:1, alignItems: "center", justifyContent: "center", backgroundColor: "#fff", padding: 15}}>
-                {/* <View>
-                    <TouchableOpacity style={{padding: 15, width: 100}}>
-                        <Text style={{color: "#ff7143", fontWeight: "bold", fontSize: 20}}>Back</Text>
-                    </TouchableOpacity>
-                </View> */}
 
                 <View>
 

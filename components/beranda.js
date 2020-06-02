@@ -1,7 +1,7 @@
 import React from 'react';
 import {Component} from 'react';
 
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, Linking} from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import bannerUtama from '../assets/banner-1.png';
@@ -10,6 +10,7 @@ import bellIcon from '../assets/icon/bell-icon.png';
 import rekomendasiIcon from '../assets/icon/rekomendasi-icon.png';
 import transaksiIcon from '../assets/icon/transaksi-icon.png';
 import whatsappIcon from '../assets/icon/whatsapp-icon.png';
+import cartIcon from '../assets/icon/cart-icon-mini.png';
 
 // DUMMY PRODUK
 import produkTelur from '../assets/produk/produk-telur.png';
@@ -32,26 +33,63 @@ export default class Beranda extends Component{
         }
     }
 
-    tambahItem = (data) => {
-
-        // filter item
-        // jika item sdh ada update item array
-        // jika belum ada, push item
+    updateItem = (data, index) => {
         this.setState({
             cart: {
                 ...this.state.cart,
-                jumlahItem: (this.state.cart.jumlahItem+=1),
-                JumlahPembelian: (this.state.cart.JumlahPembelian+=data[2]),
+                jumlahItem: (this.state.cart.jumlahItem+= data.jumlah),
+                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
+                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah
+            }
+        });
+        // console.log(this.state.cart);
+    }
+
+    pushItem = (data) => {
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                jumlahItem: (this.state.cart.jumlahItem+=data.jumlah),
+                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
                 detailitem: this.state.cart.detailItem.push(data)
             }
-
         });
-
         //console.log(this.state.cart);
     }
 
-    navigationToCart = () => {
-        this.props.navigation.navigate('cart');
+    tambahItem = (data) => {
+
+        const detailItem = this.state.cart.detailItem;
+
+        if(detailItem.length > 0){
+            // console.log('sdh ada item')
+            // loop daftar cart
+            for(let i=0; i<detailItem.length; i++){
+                // jika item sdh masuk cart
+                if(data.id == detailItem[i].id){
+                    // console.log('item kembar')
+                    // update
+                    return this.updateItem(data, i);
+                    break;
+                }
+            }
+            return this.pushItem(data);
+        }
+        else{
+            // console.log('belum ada item sama sekali')
+            // push
+            return this.pushItem(data);
+        }
+    }
+
+    navigationTo = (halaman) => {
+        this.props.navigation.navigate(halaman);
+    }
+
+    openWhatsapp = () => {
+        const phone = '628568734259';
+        const text = 'Halo+admin+agen+sembako,+saya+ingin+pesan+sembako';
+        Linking.openURL('https://api.whatsapp.com/send?phone='+phone+'&text='+text);
     }
 
     render(){
@@ -64,13 +102,18 @@ export default class Beranda extends Component{
                         {/* HEADER */}
                         <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "grey", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
+                            {/* MENU */}
                             <TouchableOpacity style={{marginLeft: 15, height: 40, width: 40}}>
                                 <Image source={menuIcon} style={{resizeMode: "contain", width: "100%"}} />
                             </TouchableOpacity>
 
+                            {/* LOGO */}
                             <Image source={logoSembako} style={{resizeMode: "contain"}} />
 
-                            <TouchableOpacity style={{marginRight: 15, height: 40, width: 40}}>
+                            {/* NOTIFIKASI */}
+                            <TouchableOpacity 
+                                style={{marginRight: 15, height: 40, width: 40}}
+                                onPress={()=>this.navigationTo('notifikasi')}>
                                 <Image source={bellIcon} style={{resizeMode: "contain", width: "100%"}} />
                             </TouchableOpacity>
                         </View>
@@ -82,17 +125,21 @@ export default class Beranda extends Component{
 
                         {/* MIDDLE SECTION */}
                         <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderEndColor: "grey", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
-                            <TouchableOpacity style={{alignItems:"center"}}>
+
+                            {/* TRANSAKSI */}
+                            <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('transaksi')}>
                                 <Image source={transaksiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Transaksi</Text>
                             </TouchableOpacity>
-
-                            <TouchableOpacity style={{alignItems:"center"}}>
+                            
+                            {/* REQUEST */}
+                            <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('request')}>
                                 <Image source={rekomendasiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Rekomendasi</Text>
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Request</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{alignItems:"center"}}>
+                            {/* WHATSAPP  */}
+                            <TouchableOpacity style={{alignItems:"center"}} onPress={this.openWhatsapp}>
                                 <Image source={whatsappIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
@@ -101,26 +148,31 @@ export default class Beranda extends Component{
                         {/* PRODUK */}
                         <ItemProduk
                             id="1"
-                            judul="Telur Ayam Kampung 6 Butir" 
+                            nama="Telur Ayam Kampung 6 Butir" 
                             harga="Rp 22.000" 
                             image={produkTelur}
-                            tambah={()=>this.tambahItem(['1', 'Telur Ayam Kampung 6 Butir', 22000])}
+                            tambah={(counter)=> this.tambahItem({
+                                id: "1",
+                                nama: "Telur Ayam Kampung 6 Butir",
+                                harga: 22000,
+                                jumlah: counter
+                            })}
                         />
 
                         <ItemProduk
                             id="2"
-                            judul="Tepung Rose Brand 1kg" 
+                            nama="Tepung Rose Brand 1kg" 
                             harga="Rp 17.000" 
                             image={produkTepung} 
-                            tambah={()=>this.tambahItem(['2', 'Tepung Rose Brand 1kg', 17000])}
+                            tambah={(counter)=>this.tambahItem({id:'2', nama:'Tepung Rose Brand 1kg', harga:17000, jumlah: counter})}
                         />
 
                         <ItemProduk
                             id="3"
-                            judul="Minyak Goreng Vipco 1lt" 
+                            nama="Minyak Goreng Vipco 1lt" 
                             harga="Rp 10.500" 
                             image={produkMinyak} 
-                            tambah={()=>this.tambahItem(['3', 'Minyak Goreng Vipco 1lt', 10500])}
+                            tambah={(counter)=>this.tambahItem({id:'3', nama:'Minyak Goreng Vipco 1lt', harga:10500, jumlah: counter})}
                         />
 
                         
@@ -131,13 +183,25 @@ export default class Beranda extends Component{
                 </ScrollView>
 
                 {/* FLOAT BOTTOM CART */}
-                <TouchableOpacity style={{height: 50, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} onPress={this.navigationToCart}>
+                <TouchableOpacity 
+                    style={{height: 60, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} 
+                    onPress={()=>this.navigationTo('cart')}>
+
+                    {/* DETAIL CART */}
                     <View>
                         <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>{this.state.cart.jumlahItem} Items | Rp {this.state.cart.JumlahPembelian}</Text>
                     </View>
                     
-                    <View >
-                        <Text style={{fontWeight: "bold", fontSize: 16, color: "#fff"}}>Cart</Text>
+                    {/* LOGO CART */}
+                    <View style={{position: "relative"}}>
+                        <View style={{position: "absolute", right: -10, top: -10, width: 20, height: 20, backgroundColor: "red", zIndex: 2, alignItems: "center", justifyContent: "center", borderRadius: 10}}>
+                            <Text 
+                                style={{color: "#fff", fontSize: 12}}
+                                >{this.state.cart.jumlahItem}
+                            </Text>
+                        </View>
+                        
+                        <Image source={cartIcon} style={{width: 30, height: 30, resizeMode: "contain"}} />
                     </View>
                 </TouchableOpacity>
 

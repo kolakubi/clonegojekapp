@@ -19,11 +19,22 @@ export default class Login extends Component{
     }
 
     loginDataCek = () => {
-        console.log(this.state.form);
+        if(this.state.form.username === "mal" && this.state.form.password == "12345"){
+            this.loginSukses();
+        }
+        else{
+            this.loginGagal();
+        }
     }
 
     loginSukses = () => {
         this.props.navigation.navigate('beranda');
+    }
+
+    loginGagal = () => {
+        this.setState({
+            modalGagalLogin: true
+        })
     }
 
     daftar = () => {
@@ -93,7 +104,7 @@ export default class Login extends Component{
                     {/* BUTTON LOGIN */}
                     <TouchableOpacity 
                         style={{borderRadius:20, backgroundColor: "#ff7143", padding: 10}} 
-                        onPress={this.loginSukses}>
+                        onPress={this.loginDataCek}>
                         <Text 
                             style={{textAlign: "center", color: "#fff", fontSize: 16, fontWeight: "bold"}}>Login
                         </Text>

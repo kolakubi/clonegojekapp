@@ -3,6 +3,9 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, TextInput, ScrollView, Image} from 'react-native';
 
 import ItemProduk from './itemProduk';
+import AlamatSaya from './alamatSaya';
+
+
 import logoCod from '../assets/cod-logo.jpg';
 import logoMaps from '../assets/icon/map-marker-icon-mini.png';
 import produkTepung from '../assets/produk/produk-tepung.png';
@@ -11,6 +14,14 @@ import produkTepung from '../assets/produk/produk-tepung.png';
 import CartDeskripsi from './cartDeskripsi';
 
 export default class Cart extends Component{
+
+    navigateToAlamatSaya = () => {
+
+        console.log(this.props)
+        this.props.navigation.navigate('alamatSaya');
+        
+    }
+
     render(){
         return(
             <ScrollView style={{backgroundColor: "#fff"}}>
@@ -19,10 +30,13 @@ export default class Cart extends Component{
                     {/* DIKIRIM */}
                     <View style={{width: "95%", borderWidth: 0.5, borderColor: "grey", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
 
-                        <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10}}>Dikirim</Text>
+                        <Text 
+                            style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10}}
+                            >Dikirim</Text>
                         
-                        <TouchableOpacity>
-                            <View style={{paddingVertical: 10, flexDirection: "row", alignItems: "center"}}>
+                        <TouchableOpacity onPress={this.navigateToAlamatSaya}>
+                            <View 
+                                style={{paddingVertical: 10, flexDirection: "row", alignItems: "center"}} >
                                 <Image source={logoMaps} style={{height: 40, width: 40, resizeMode:"contain"}} />
                                 <Text style={{fontSize: 14}}>Pilih Alamat Pengiriman</Text>
                             </View>
