@@ -28,7 +28,7 @@ export default class Login extends Component{
     }
 
     loginSukses = () => {
-        this.props.navigation.navigate('beranda');
+        this.props.navigation.replace('userMenu');
     }
 
     loginGagal = () => {

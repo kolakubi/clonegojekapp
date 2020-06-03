@@ -1,5 +1,7 @@
 import React from 'react';
 import {Component} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import {View, Text, Image, TouchableOpacity, ScrollView, Linking} from 'react-native';
 
@@ -11,6 +13,8 @@ import rekomendasiIcon from '../assets/icon/rekomendasi-icon.png';
 import transaksiIcon from '../assets/icon/transaksi-icon.png';
 import whatsappIcon from '../assets/icon/whatsapp-icon.png';
 import cartIcon from '../assets/icon/cart-icon-mini.png';
+
+import GlobalStyles from './utility/globalStyles';
 
 // DUMMY PRODUK
 import produkTelur from '../assets/produk/produk-telur.png';
@@ -103,8 +107,10 @@ export default class Beranda extends Component{
                         <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "grey", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
                             {/* MENU */}
-                            <TouchableOpacity style={{marginLeft: 15, height: 40, width: 40}}>
-                                <Image source={menuIcon} style={{resizeMode: "contain", width: "100%"}} />
+                            <TouchableOpacity 
+                                style={{marginLeft: 15, height: 40, width: 40}}
+                                onPress={this.props.navigation.openDrawer}>
+                                <Entypo name="menu" size={30} color={GlobalStyles.mainColor} />
                             </TouchableOpacity>
 
                             {/* LOGO */}
@@ -112,9 +118,17 @@ export default class Beranda extends Component{
 
                             {/* NOTIFIKASI */}
                             <TouchableOpacity 
-                                style={{marginRight: 15, height: 40, width: 40}}
+                                style={{marginRight: 15, height: 30, width: 30, position: "relative"}}
                                 onPress={()=>this.navigationTo('notifikasi')}>
-                                <Image source={bellIcon} style={{resizeMode: "contain", width: "100%"}} />
+
+                                <View style={{position: "absolute", right: -10, top: -10, width: 20, height: 20, backgroundColor: "red", zIndex: 2, alignItems: "center", justifyContent: "center", borderRadius: 10}}>
+                                    <Text 
+                                        style={{color: "#fff", fontSize: 12}}
+                                        >{this.state.cart.jumlahItem}
+                                    </Text>
+                                </View>
+                                
+                                <Icon name="bell" size={30} color={GlobalStyles.mainColor} />
                             </TouchableOpacity>
                         </View>
 
@@ -128,19 +142,19 @@ export default class Beranda extends Component{
 
                             {/* TRANSAKSI */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('transaksi')}>
-                                <Image source={transaksiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Icon name="history" size={30} color={GlobalStyles.mainColor} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Transaksi</Text>
                             </TouchableOpacity>
                             
                             {/* REQUEST */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('request')}>
-                                <Image source={rekomendasiIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Icon name="list" size={30} color={GlobalStyles.mainColor} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Request</Text>
                             </TouchableOpacity>
 
                             {/* WHATSAPP  */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={this.openWhatsapp}>
-                                <Image source={whatsappIcon} style={{resizeMode: "contain", width: "100%", width: 35, height: 35}} />
+                                <Icon name="whatsapp" size={30} color={GlobalStyles.mainColor} />
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
                         </View>
@@ -184,7 +198,7 @@ export default class Beranda extends Component{
 
                 {/* FLOAT BOTTOM CART */}
                 <TouchableOpacity 
-                    style={{height: 60, width: "100%", backgroundColor: "#ff7143", position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} 
+                    style={{height: 60, width: "100%", backgroundColor: GlobalStyles.mainColor, position: "absolute", bottom: 0, left: 0, justifyContent: "space-around", alignItems: "center", flexDirection: "row"}} 
                     onPress={()=>this.navigationTo('cart')}>
 
                     {/* DETAIL CART */}
@@ -201,7 +215,7 @@ export default class Beranda extends Component{
                             </Text>
                         </View>
                         
-                        <Image source={cartIcon} style={{width: 30, height: 30, resizeMode: "contain"}} />
+                        <Icon name="shopping-cart" size={30} color="#fff" />
                     </View>
                 </TouchableOpacity>
 

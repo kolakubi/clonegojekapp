@@ -50,22 +50,27 @@ export default class ItemProduk extends Component{
                 {/* BUTTON TAMBAH */}
                 <View style={{flex: 1, alignItems: "center", justifyContent: "flex-end", flexDirection: "row"}}> 
 
+                    {/* COUNTER */}
                     <View style={{flexDirection: "row", marginRight: 20}}>
+
+                        {/* KURANG */}
                         <TouchableOpacity 
-                            style={{height: 20, width: 20, backgroundColor: "blue", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
+                            style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
                             onPress={this.kurangCounter}>
                             <Text style={{color: "#fff"}}>-</Text>
                         </TouchableOpacity>
 
                         <Text style={{marginHorizontal: 15}}>{this.state.counter}</Text>
 
+                        {/* TAMBAH */}
                         <TouchableOpacity 
-                            style={{height: 20, width: 20, backgroundColor: "blue", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
+                            style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
                             onPress={this.tambahCounter}>
                             <Text style={{color: "#fff"}}>+</Text>
                         </TouchableOpacity>
                     </View>
 
+                    {/* BUTTON ACC TO CART */}
                     <TouchableOpacity 
                         style={{backgroundColor: "#ff7143", width: 100, height: 35, alignItems: "center", justifyContent: "center", borderRadius: 8}}
                         onPress={()=>this.props.tambah(this.state.counter)}

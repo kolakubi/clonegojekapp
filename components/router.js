@@ -16,8 +16,25 @@ import AlamatSaya from './alamatSaya';
 import TambahAlamat from './tambahAlamat';
 import Notifikasi from './notifikasi';
 
+import Akun from './user/akun';
+import Faq from './user/faq';
+import Tentang from './user/tentang';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+class UserMenu extends Component{
+    render(){
+        return(
+            <Drawer.Navigator>
+                <Drawer.Screen name="Beranda" component={Beranda} />
+                <Drawer.Screen name="Akun" component={Akun} />
+                <Drawer.Screen name="Faq" component={Faq} />
+                <Drawer.Screen name="Tentang" component={Tentang} />
+            </Drawer.Navigator>
+        )
+    }
+}
 
 export default class Router extends Component{
 
@@ -32,10 +49,11 @@ export default class Router extends Component{
         }
 
         return(
-            <Stack.Navigator initialRouteName="notifikasi">
+            <Stack.Navigator initialRouteName="userMenu">
                 <Stack.Screen name="welcome" component={Welcome} options={{headerShown: false}} />
                 <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
-                <Stack.Screen name="beranda" component={Beranda} options={{headerShown: false}} />
+                <Stack.Screen name="userMenu" component={UserMenu} options={{headerShown: false}}/>
+                {/* <Stack.Screen name="beranda" component={Beranda} options={{headerShown: false}} /> */}
                 <Stack.Screen 
                     name="daftar" 
                     component={Daftar} 

@@ -6,7 +6,7 @@ export default class Welcome extends Component{
 
     componentDidMount(){
         setTimeout(()=> {
-            this.props.navigation.navigate('login');
+            this.props.navigation.replace('login');
         }, 2000)
     }
 
