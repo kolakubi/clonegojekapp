@@ -6,9 +6,9 @@ import GlobalStyle from './utility/globalStyles';
 export default class Notifikasi extends Component{
     render(){
         return(
-            <View style={GlobalStyle.container}>
+            <View style={{...GlobalStyle.container, backgroundColor: "#fafafa"}}>
                 <TouchableOpacity 
-                    style={{justifyContent: "space-between", paddingVertical: 20, paddingHorizontal: 10, borderWidth: 0.5, borderColor: "#eaeaea", marginBottom: 15}}
+                    style={{justifyContent: "space-between", paddingVertical: 20, paddingHorizontal: 10, borderWidth: 0.5, borderColor: "#fafafa", marginBottom: 15, backgroundColor: "#fff"}}
                     onPress={this.navigateToTambahAlamat}>
 
                     <Text style={{color: "#000", fontSize: 14}}>Keterlambatan Pengiriman</Text>
@@ -17,7 +17,7 @@ export default class Notifikasi extends Component{
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={{justifyContent: "space-between", paddingVertical: 20, paddingHorizontal: 10, borderWidth: 0.5, borderColor: "#eaeaea", marginBottom: 15}}
+                    style={{justifyContent: "space-between", paddingVertical: 20, paddingHorizontal: 10, borderWidth: 0.5, borderColor: "#fafafa", marginBottom: 15, backgroundColor: "#fff"}}
                     onPress={this.navigateToTambahAlamat}>
 
                     <Text style={{color: "#000", fontSize: 14}}>Member Verification</Text>

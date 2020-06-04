@@ -13,6 +13,10 @@ export default class ItemProduk extends Component{
         }
     }
 
+    componentDidMount(){
+        //console.log(this.props)
+    }
+
     tambahCounter = () => {
         this.setState({
           counter: this.state.counter += 1  
@@ -20,32 +24,40 @@ export default class ItemProduk extends Component{
     }
 
     kurangCounter = () => {
-
         if(this.state.counter > 1){
             this.setState({
                 counter: this.state.counter -= 1
             })
         }
+    }
 
+    navigateToDetailProduk = () => {
+        this.props.navigation.navigate('itemProdukDetail');
     }
 
     render(){
         return(
-            <View style={{height: 155, width: "95%", marginBottom: 10, padding: 15, borderBottomColor: "grey", borderBottomWidth: 0.5}}>
+            <View style={{height: 155, width: "95%", marginBottom: 10, padding: 15, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
-                <View style={{alignItems: "center", flexDirection: "row"}}>
+                <TouchableOpacity 
+                    style={{alignItems: "center", flexDirection: "row"}}
+                    onPress={this.navigateToDetailProduk}
+                >
 
                     {/* THUMBNAIL */}
-                    <Image source={this.props.image} style={{marginRight: 15, width: 90, height: 90, resizeMode: "contain"}} />
+                    <Image source={this.props.produk.image} style={{marginRight: 15, width: 90, height: 90, resizeMode: "contain"}} />
 
                     {/* DESKRIPSI */}
                     <View>
-                        <Text style={{color: "#000", fontSize: 14, fontWeight: "bold"}}>{this.props.nama}</Text>
-                        <Text style={{fontSize: 14}}>{this.props.harga}</Text>
-                        <Text style={{fontSize: 14, textDecorationLine:"line-through"}}>{this.props.harga}</Text>
+                        <Text style={{color: "#000", fontSize: 14, fontWeight: "bold"}}>{this.props.produk.nama}</Text>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={{fontSize: 14, marginRight: 20}}>{this.props.produk.harga}</Text>
+                            <Text style={{fontSize: 14, textDecorationLine:"line-through"}}>{this.props.harga}</Text>
+                        </View>
+                        
                     </View>
                     
-                </View>
+                </TouchableOpacity>
                     
                 {/* BUTTON TAMBAH */}
                 <View style={{flex: 1, alignItems: "center", justifyContent: "flex-end", flexDirection: "row"}}> 

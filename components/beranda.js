@@ -7,12 +7,6 @@ import {View, Text, Image, TouchableOpacity, ScrollView, Linking} from 'react-na
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import bannerUtama from '../assets/banner-1.png';
-import menuIcon from '../assets/icon/menu-icon.png';
-import bellIcon from '../assets/icon/bell-icon.png';
-import rekomendasiIcon from '../assets/icon/rekomendasi-icon.png';
-import transaksiIcon from '../assets/icon/transaksi-icon.png';
-import whatsappIcon from '../assets/icon/whatsapp-icon.png';
-import cartIcon from '../assets/icon/cart-icon-mini.png';
 
 import GlobalStyles from './utility/globalStyles';
 
@@ -29,6 +23,12 @@ export default class Beranda extends Component{
         super(props);
 
         this.state = {
+            getProduct: [
+                {id: "1", nama: "Telur Ayam Kampung 6 Butir", harga: 22000, image: produkTelur},
+                {id:'2', nama:'Tepung Rose Brand 1kg', harga:17000, image: produkTepung},
+                {id:'3', nama:'Minyak Goreng Vipco 1lt', harga:10500, image: produkMinyak},
+
+            ],
             cart: {
                 jumlahItem: 0,
                 JumlahPembelian: 0,
@@ -99,12 +99,12 @@ export default class Beranda extends Component{
     render(){
         return(
 
-            <View style={{backgroundColor: "#fff"}}>
+            <View style={{backgroundColor: "#fafafa"}}>
                 <ScrollView>
                     <View style={{alignItems: "center"}}>
 
                         {/* HEADER */}
-                        <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "grey", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
+                        <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "#eaeaea", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
                             {/* MENU */}
                             <TouchableOpacity 
@@ -118,7 +118,7 @@ export default class Beranda extends Component{
 
                             {/* NOTIFIKASI */}
                             <TouchableOpacity 
-                                style={{marginRight: 15, height: 30, width: 30, position: "relative"}}
+                                style={{marginRight: 15, height: 25, width: 25, position: "relative"}}
                                 onPress={()=>this.navigationTo('notifikasi')}>
 
                                 <View style={{position: "absolute", right: -10, top: -10, width: 20, height: 20, backgroundColor: "red", zIndex: 2, alignItems: "center", justifyContent: "center", borderRadius: 10}}>
@@ -128,7 +128,7 @@ export default class Beranda extends Component{
                                     </Text>
                                 </View>
                                 
-                                <Icon name="bell" size={30} color={GlobalStyles.mainColor} />
+                                <Icon name="bell" size={25} color={GlobalStyles.mainColor} />
                             </TouchableOpacity>
                         </View>
 
@@ -138,7 +138,7 @@ export default class Beranda extends Component{
                         </View>
 
                         {/* MIDDLE SECTION */}
-                        <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderEndColor: "grey", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
+                        <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderColor: "#fafafa", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
 
                             {/* TRANSAKSI */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('transaksi')}>
@@ -160,37 +160,16 @@ export default class Beranda extends Component{
                         </View>
 
                         {/* PRODUK */}
-                        <ItemProduk
-                            id="1"
-                            nama="Telur Ayam Kampung 6 Butir" 
-                            harga="Rp 22.000" 
-                            image={produkTelur}
-                            tambah={(counter)=> this.tambahItem({
-                                id: "1",
-                                nama: "Telur Ayam Kampung 6 Butir",
-                                harga: 22000,
-                                jumlah: counter
-                            })}
-                        />
-
-                        <ItemProduk
-                            id="2"
-                            nama="Tepung Rose Brand 1kg" 
-                            harga="Rp 17.000" 
-                            image={produkTepung} 
-                            tambah={(counter)=>this.tambahItem({id:'2', nama:'Tepung Rose Brand 1kg', harga:17000, jumlah: counter})}
-                        />
-
-                        <ItemProduk
-                            id="3"
-                            nama="Minyak Goreng Vipco 1lt" 
-                            harga="Rp 10.500" 
-                            image={produkMinyak} 
-                            tambah={(counter)=>this.tambahItem({id:'3', nama:'Minyak Goreng Vipco 1lt', harga:10500, jumlah: counter})}
-                        />
-
+                        {this.state.getProduct.map((produk)=>(
+                            <ItemProduk
+                                key={produk.id}
+                                produk={produk}
+                                navigation={this.props.navigation}
+                                tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
+                            />
+                        ))}
                         
-
+                        
                         <View style={{height: 100}}></View>
 
                     </View>

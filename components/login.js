@@ -130,7 +130,7 @@ export default class Login extends Component{
                 <TouchableOpacity 
                     style={{padding: 10}} onPress={this.lupaAkun}>
                     <Text 
-                        style={{color: "#ff7143", fontSize: 18, fontWeight: "bold"}}>Lupa Password?
+                        style={{color: "#ff7143", fontSize: 16, fontWeight: "bold"}}>Lupa Password?
                     </Text>
                 </TouchableOpacity>
                 </View>

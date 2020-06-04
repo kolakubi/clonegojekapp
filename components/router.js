@@ -15,6 +15,7 @@ import Transaksi from './transaksi';
 import AlamatSaya from './alamatSaya';
 import TambahAlamat from './tambahAlamat';
 import Notifikasi from './notifikasi';
+import ItemProdukDetail from './itemProdukDetail';
 
 import Akun from './user/akun';
 import Faq from './user/faq';
@@ -86,6 +87,10 @@ export default class Router extends Component{
                     name="notifikasi" 
                     component={Notifikasi}
                     options={{...headerOption, title: "Notifikasi"}} />
+                <Stack.Screen 
+                    name="itemProdukDetail" 
+                    component={ItemProdukDetail}
+                    options={{...headerOption, title: "Detail Produk"}} />
             </Stack.Navigator>
         )
     }

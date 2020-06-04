@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Image} from 'react-native';
-import LogoWelcome from '../assets/logo-welcome.png';
+import LogoWelcome from '../assets/logo-splash.png';
+import globalStyle from './utility/globalStyles';
 
 export default class Welcome extends Component{
 
@@ -13,7 +14,7 @@ export default class Welcome extends Component{
     render(){
         return(
             <View 
-                style={{flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#ff7143"}}>
+                style={{flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: globalStyle.mainColor}}>
                 <Image source={LogoWelcome} />
             </View>
         )
