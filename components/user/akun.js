@@ -53,7 +53,7 @@ export default class Akun extends Component{
 
 
                 {/* CONTENT */}
-                <ScrollView>
+                <ScrollView style={{backgroundColor: "#fff"}}>
                 <View style={{...globalStyles.container, justifyContent: "center", alignItems: "center"}}>
                     
                     {/* AVATAR */}

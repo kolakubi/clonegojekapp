@@ -11,7 +11,7 @@ export default class Tentang extends Component{
             <View style={{flex: 1}}>
 
                 
-                <ScrollView>
+                <ScrollView style={{backgroundColor: "#f6f7fb"}}>
                     <View>
                         {/* HEADER */}
                         <View style={{width: "100%", height: 60, flexDirection: "row", alignItems: "center", borderBottomColor: "grey", borderBottomWidth: 0.5, backgroundColor: globalStyles.mainColor}}>
@@ -28,7 +28,7 @@ export default class Tentang extends Component{
                     </View>
 
                     {/* CONTENT */}
-                    <View style={{...globalStyles.container, alignItems: "center", justifyContent: "center", backgroundColor: "#f6f7fb"}}>
+                    <View style={{...globalStyles.container, alignItems: "center", justifyContent: "center", backgroundColor: "#f6f7fb", paddingTop: 30}}>
 
                         <View style={{width: "90%"}}>
 

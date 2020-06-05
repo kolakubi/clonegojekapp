@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-
 import {View, Text, TouchableOpacity, TextInput, ScrollView, Image} from 'react-native';
 
 import ItemProduk from './itemProduk';
 import AlamatSaya from './alamatSaya';
-
 
 import logoCod from '../assets/cod-logo.jpg';
 import logoMaps from '../assets/icon/map-marker-icon-mini.png';
@@ -13,6 +11,8 @@ import logoMaps from '../assets/icon/map-marker-icon-mini.png';
 import produkTelur from '../assets/produk/produk-telur.png';
 import produkTepung from '../assets/produk/produk-tepung.png';
 import produkMinyak from '../assets/produk/produk-minyak-goreng-vipco.png';
+
+import GlobalStyle from './utility/globalStyles';
 
 
 import CartDeskripsi from './cartDeskripsi';
@@ -98,7 +98,7 @@ export default class Cart extends Component{
                 <View style={{flex: 1, alignItems: "center", marginTop: 20}}>
 
                     {/* DIKIRIM */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
 
                         <Text 
                             style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10}}
@@ -114,7 +114,7 @@ export default class Cart extends Component{
                     </View>
 
                     {/* PESANAN */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Pesanan</Text>
                         
                         {this.state.getProduct.map((produk)=>(
@@ -126,7 +126,7 @@ export default class Cart extends Component{
                     </View>
 
                     {/* PEMBAYARAN */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Pembayaran</Text>
                         
                         <TouchableOpacity>
@@ -136,7 +136,7 @@ export default class Cart extends Component{
                     </View>
 
                     {/* CATATAN PEMBELI */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Catatan Pembeli</Text>
                         
                         <TextInput placeholder="silakan input catata"></TextInput>
@@ -144,7 +144,7 @@ export default class Cart extends Component{
                     </View>
 
                     {/* RINCIAN PEMBAYARAN */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Rincian Pembayaran</Text>
                         
                         <View style={{padding: 10, borderBottomColor: "green", borderBottomWidth: 0.5}}>
@@ -161,7 +161,7 @@ export default class Cart extends Component{
                     </View>
 
                     {/* BUTTON PESAN SEKARANG */}
-                    <View style={{width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
+                    <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         
                         <TouchableOpacity style={{paddingVertical: 10, backgroundColor: "#ff7143", borderRadius: 5}}>
                             <Text style={{color: "#fff", fontWeight: "bold", fontSize: 17, textAlign: "center"}}>Pesan Sekarang</Text>

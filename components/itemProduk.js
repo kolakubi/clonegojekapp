@@ -2,6 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 
 import {View, Text, TouchableOpacity, Image} from 'react-native';
+import globalStyle from './utility/globalStyles';
 
 export default class ItemProduk extends Component{
 
@@ -37,7 +38,7 @@ export default class ItemProduk extends Component{
 
     render(){
         return(
-            <View style={{height: 155, width: "95%", marginBottom: 10, padding: 15, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
+            <View style={{height: 155, width: "95%", marginBottom: 10, padding: 15, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff", ...globalStyle.shadowBox}}>
 
                 <TouchableOpacity 
                     style={{alignItems: "center", flexDirection: "row"}}

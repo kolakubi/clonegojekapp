@@ -3,11 +3,9 @@ import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {View, Text, Image, TouchableOpacity, ScrollView, Linking} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
-import bannerUtama from '../assets/banner-1.png';
-
 import GlobalStyles from './utility/globalStyles';
 
 // DUMMY PRODUK
@@ -16,6 +14,12 @@ import produkTepung from '../assets/produk/produk-tepung.png';
 import produkMinyak from '../assets/produk/produk-minyak-goreng-vipco.png';
 
 import ItemProduk from './itemProduk';
+
+// SLIDER
+import { SliderBox } from "react-native-image-slider-box";
+import Banner1 from '../assets/banner-1.png';
+import Banner2 from '../assets/banner-2.jpg';
+import Banner3 from '../assets/banner-3.jpg';
 
 export default class Beranda extends Component{
 
@@ -33,7 +37,12 @@ export default class Beranda extends Component{
                 jumlahItem: 0,
                 JumlahPembelian: 0,
                 detailItem: []
-            }
+            },
+            banner: [
+                Banner1,
+                Banner2,
+                Banner3
+            ]
         }
     }
 
@@ -104,7 +113,7 @@ export default class Beranda extends Component{
                     <View style={{alignItems: "center"}}>
 
                         {/* HEADER */}
-                        <View style={{width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "#eaeaea", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
+                        <View style={{...GlobalStyles.shadowBox, width: "100%", height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomColor: "#eaeaea", borderBottomWidth: 0.5, backgroundColor: "#fff"}}>
 
                             {/* MENU */}
                             <TouchableOpacity 
@@ -124,7 +133,7 @@ export default class Beranda extends Component{
                                 <View style={{position: "absolute", right: -10, top: -10, width: 20, height: 20, backgroundColor: "red", zIndex: 2, alignItems: "center", justifyContent: "center", borderRadius: 10}}>
                                     <Text 
                                         style={{color: "#fff", fontSize: 12}}
-                                        >{this.state.cart.jumlahItem}
+                                        >0
                                     </Text>
                                 </View>
                                 
@@ -133,12 +142,24 @@ export default class Beranda extends Component{
                         </View>
 
                         {/* BANNER */}
-                        <View style={{height: 195, width: "95%"}}>
-                            <Image source={bannerUtama} style={{resizeMode: "contain", maxWidth: "100%"}}  />
+                        <View style={{height: 195}}>
+                            {/* <Image source={bannerUtama} style={{resizeMode: "contain", maxWidth: "100%"}}  /> */}
+                            <SliderBox 
+                                images={this.state.banner} 
+                                // sliderBoxHeight={195}
+                                dotColor="#FFEE58"
+                                inactiveDotColor="#90A4AE"
+                                resizeMethod={'resize'}
+                                resizeMode={'contain'}
+                                // autoplay
+                                circleLoop
+                                ImageComponentStyle={{borderRadius: 10, width: "95%"}}
+                            />
+                            
                         </View>
 
                         {/* MIDDLE SECTION */}
-                        <View style={{width: "95%", marginTop: 10, borderWidth: 0.5, borderColor: "#fafafa", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
+                        <View style={{...GlobalStyles.shadowBox, width: "95%", marginTop: 10, borderWidth: 0.5, borderColor: "#fafafa", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
 
                             {/* TRANSAKSI */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('transaksi')}>

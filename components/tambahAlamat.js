@@ -25,17 +25,17 @@ export default class TambahAlamat extends Component{
 
     render(){
         return(
-            <ScrollView>
+            <ScrollView style={{backgroundColor: "#fff"}}>
 
-                <View style={{...GlobalStyle.container, justifyContent: "center"}}>
+                <View style={{...GlobalStyle.container, justifyContent: "center", backgroundColor: "#fff", flex: 1}}>
 
                     {/* ALAMAT LENGKAP */}
                     <Text style={{fontSize: 16, color: "#000"}}>Alamat Lengkap</Text>
                     <GoogleAutoComplete 
                         apiKey={API_KEYS}
-                        debounce={500}
+                        debounce={1000}
                         minLength={7}
-                        radius={"3000"}
+                        radius={"4000"}
                         components="country:id"
                     >
                         {({ handleTextChange, locationResults, isSearching })=>(
@@ -46,6 +46,7 @@ export default class TambahAlamat extends Component{
                                         value={this.props.value}
                                         placeholder="ketik alamat" 
                                         onChangeText={handleTextChange}
+                                        style={{borderBottomColor: GlobalStyle.mainColor, borderBottomWidth: 1, marginBottom: 20}}
                                     />
                                 </View>
                                 {isSearching && <ActivityIndicator size="large" color="red" />}
@@ -63,11 +64,11 @@ export default class TambahAlamat extends Component{
 
                     {/* NAMA PENERIMA */}
                     <Text style={{fontSize: 16, color: "#000"}}>Nama Penerima</Text>
-                    <TextInput placeholder="ketik nama" style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 10, paddingBottom: 10, marginBottom: 10}} />
+                    <TextInput placeholder="ketik nama" style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 10, paddingBottom: 10, marginBottom: 20}} />
 
                     {/* NOMOR HANDPHONE */}
                     <Text style={{fontSize: 16, color: "#000"}}>Nomor Handphone</Text>
-                    <TextInput placeholder="contoh: 08120001111" style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 10, paddingBottom: 10, marginBottom: 10}} />
+                    <TextInput placeholder="contoh: 08120001111" style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 10, paddingBottom: 10, marginBottom: 20}} />
 
                     {/* GOOGLE MAPS */}
                     <Text style={{fontSize: 16, color: "#000", marginBottom: 5}}>Koordinat Lokasi</Text>
