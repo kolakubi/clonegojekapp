@@ -3,7 +3,7 @@ import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {View, Text, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage } from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import GlobalStyles from './utility/globalStyles';
@@ -105,6 +105,11 @@ export default class Beranda extends Component{
         Linking.openURL('https://api.whatsapp.com/send?phone='+phone+'&text='+text);
     }
 
+    logout = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.replace('login');
+    }
+
     render(){
         return(
 
@@ -144,6 +149,7 @@ export default class Beranda extends Component{
                         {/* BANNER */}
                         <View style={{height: 195}}>
                             {/* <Image source={bannerUtama} style={{resizeMode: "contain", maxWidth: "100%"}}  /> */}
+                            
                             <SliderBox 
                                 images={this.state.banner} 
                                 // sliderBoxHeight={195}
@@ -189,7 +195,6 @@ export default class Beranda extends Component{
                                 tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
                             />
                         ))}
-                        
                         
                         <View style={{height: 100}}></View>
 

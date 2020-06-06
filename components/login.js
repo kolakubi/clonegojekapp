@@ -1,6 +1,6 @@
 import React from 'react'
 import {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, Modal} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, Modal, AsyncStorage} from 'react-native'
 import logoSembako from '../assets/logo-paketsembako.png';
 import ModalGagalLogin from './modalGagalLogin';
 
@@ -18,8 +18,9 @@ export default class Login extends Component{
         }
     }
 
-    loginDataCek = () => {
-        if(this.state.form.username === "mal" && this.state.form.password == "12345"){
+    loginDataCek = async () => {
+        if(this.state.form.username === "mal" && this.state.form.password === "12345"){
+            await AsyncStorage.setItem('loggedIn', '1');
             this.loginSukses();
         }
         else{
@@ -28,7 +29,7 @@ export default class Login extends Component{
     }
 
     loginSukses = () => {
-        this.props.navigation.replace('userMenu');
+        this.props.navigation.replace('home');
     }
 
     loginGagal = () => {
@@ -90,6 +91,7 @@ export default class Login extends Component{
                     <TextInput 
                         placeholder="username"
                         placeholderTextColor="#ff7143" 
+                        autoCapitalize="none"
                         style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000"}}
                         onChangeText={(val) => this.ketik(val, "username")}
                     />

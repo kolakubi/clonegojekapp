@@ -30,7 +30,10 @@ export default class itemProdukDetail extends Component{
                 <Text style={{width: "90%", fontSize: 16, color: "#525252", marginTop: 20}}>Tidak hanya lezat dan mudah dimasak, telur ayam ini memiliki kandungan protein yang dibutuhkan oleh tubuh. berat 618 - 630gr</Text>
 
                 {/* BUTTON ADD TO CART */}
-                <TouchableOpacity style={{borderRadius:30, backgroundColor: "#ff7143", padding: 15, marginTop: 30, width: "80%"}} onPress={this.tambahKeKeranjang}>
+                <TouchableOpacity 
+                    style={{borderRadius:30, backgroundColor: "#ff7143", padding: 15, marginTop: 30, width: "80%"}} 
+                    onPress={this.tambahKeKeranjang}>
+                        
                     <Text style={{textAlign: "center", color: "#fff", fontSize: 16, fontWeight: "bold"}}>Tambah ke Keranjang <Icon name="shopping-cart" size={18} color="#fff"></Icon></Text>
                 </TouchableOpacity>
             </View>

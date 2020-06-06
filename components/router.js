@@ -21,13 +21,16 @@ import Akun from './user/akun';
 import Faq from './user/faq';
 import Tentang from './user/tentang';
 
+import CustomDrawerMenu from './customDrawerMenu'
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 class UserMenu extends Component{
     render(){
         return(
-            <Drawer.Navigator>
+            <Drawer.Navigator
+                drawerContent={props=><CustomDrawerMenu {...props}/>}
+            >
                 <Drawer.Screen name="Beranda" component={Beranda} />
                 <Drawer.Screen name="Akun" component={Akun} />
                 <Drawer.Screen name="Faq" component={Faq} />
@@ -38,9 +41,7 @@ class UserMenu extends Component{
 }
 
 export default class Router extends Component{
-
     render(){
-
         const headerOption = {
             title: "Buat Akun",
             headerTintColor: "#fff",
@@ -50,10 +51,10 @@ export default class Router extends Component{
         }
 
         return(
-            <Stack.Navigator initialRouteName="userMenu">
+            <Stack.Navigator initialRouteName="welcome">
                 <Stack.Screen name="welcome" component={Welcome} options={{headerShown: false}} />
                 <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
-                <Stack.Screen name="userMenu" component={UserMenu} options={{headerShown: false}}/>
+                <Stack.Screen name="home" component={UserMenu} options={{headerShown: false}}/>
                 {/* <Stack.Screen name="beranda" component={Beranda} options={{headerShown: false}} /> */}
                 <Stack.Screen 
                     name="daftar" 

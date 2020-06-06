@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, AsyncStorage} from 'react-native';
 import LogoWelcome from '../assets/logo-splash.png';
 import globalStyle from './utility/globalStyles';
 
@@ -7,8 +7,13 @@ export default class Welcome extends Component{
 
     componentDidMount(){
         setTimeout(()=> {
-            this.props.navigation.replace('login');
+            this.isLoggedIn();
         }, 2000)
+    }
+
+    isLoggedIn = async ()=> {
+        const isLoggedIn = await AsyncStorage.getItem('loggedIn');
+        this.props.navigation.replace(isLoggedIn ? 'home' : 'login');
     }
 
     render(){

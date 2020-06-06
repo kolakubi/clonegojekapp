@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native';
+import {View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator, ScrollView, Button} from 'react-native';
 
 import GlobalStyle from './utility/globalStyles';
 
@@ -15,12 +15,24 @@ export default class TambahAlamat extends Component{
         super(props);
 
         this.state= {
-            address: ""
+            address: "",
+            locationMaps: []
         }
     }
 
     tambahAlamat = () => {
         alert('alamat ditambahkan');
+    }
+
+    handleClick = async () => {
+
+    }
+
+    setAlamat = (address)=>{
+        this.setState(
+            {address}
+        )
+        // console.log(this.state.address);
     }
 
     render(){
@@ -38,24 +50,36 @@ export default class TambahAlamat extends Component{
                         radius={"4000"}
                         components="country:id"
                     >
-                        {({ handleTextChange, locationResults, isSearching })=>(
+                        {({ 
+                            handleTextChange, 
+                            locationResults, 
+                            isSearching, 
+                            fetchDetails,
+                            clearSearchs
+                        })=>(
                             <React.Fragment>
-                                {console.log('locationResults', locationResults)}
+                                {/* {console.log('locationResults', locationResults)} */}
                                 <View>
                                     <TextInput 
-                                        value={this.props.value}
+                                        value={this.state.address}
                                         placeholder="ketik alamat" 
-                                        onChangeText={handleTextChange}
+                                        onChangeText={(val)=>{
+                                            this.setAlamat(val); 
+                                            handleTextChange(val)}}
                                         style={{borderBottomColor: GlobalStyle.mainColor, borderBottomWidth: 1, marginBottom: 20}}
                                     />
+                                    {/* <Button title="hapus" onPress={clearSearchs} /> */}
                                 </View>
                                 {isSearching && <ActivityIndicator size="large" color="red" />}
                                 <ScrollView>
                                     {locationResults.map((data)=>(
                                         <LocationItem 
-                                        {...data}
-                                        key={data.id}
-                                        data={data} />
+                                            {...data}
+                                            key={data.id}
+                                            data={data}
+                                            fetchDetails={fetchDetails}
+                                            setAddress={(address)=>this.setAlamat(address)}
+                                        />
                                     ))}
                                 </ScrollView>
                             </React.Fragment>
