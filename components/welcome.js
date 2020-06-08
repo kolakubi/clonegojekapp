@@ -13,6 +13,9 @@ export default class Welcome extends Component{
 
     isLoggedIn = async ()=> {
         const isLoggedIn = await AsyncStorage.getItem('loggedIn');
+        // const key = JSON.parse(await AsyncStorage.getItem('user')).key;
+        // const username = JSON.parse(await AsyncStorage.getItem('user')).username;
+        // console.log(key, username)
         this.props.navigation.replace(isLoggedIn ? 'home' : 'login');
     }
 

@@ -13,7 +13,7 @@ const globalStyles = {
             height: 1,
         },
         shadowOpacity: 0.18,
-        shadowRadius: 1.00,
+        shadowRadius: 2.00,
 
         elevation: 1,
     }

@@ -3,6 +3,7 @@ import {Component} from 'react';
 
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import globalStyle from './utility/globalStyles';
+import globalStyles from './utility/globalStyles';
 
 export default class ItemProduk extends Component{
 
@@ -38,7 +39,7 @@ export default class ItemProduk extends Component{
 
     render(){
         return(
-            <View style={{height: 155, width: "95%", marginBottom: 10, padding: 15, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff", ...globalStyle.shadowBox}}>
+            <View style={{width: "95%", marginBottom: 10, paddingHorizontal: 15, paddingVertical: 10, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff", borderRadius: 10, ...globalStyle.shadowBox}}>
 
                 <TouchableOpacity 
                     style={{alignItems: "center", flexDirection: "row"}}
@@ -46,11 +47,11 @@ export default class ItemProduk extends Component{
                 >
 
                     {/* THUMBNAIL */}
-                    <Image source={this.props.produk.image} style={{marginRight: 15, width: 90, height: 90, resizeMode: "contain"}} />
+                    <Image source={this.props.produk.gambar_produk} style={{marginRight: 15, width: 90, height: 90, resizeMode: "contain"}} />
 
                     {/* DESKRIPSI */}
                     <View>
-                        <Text style={{color: "#000", fontSize: 14, fontWeight: "bold"}}>{this.props.produk.nama}</Text>
+                        <Text style={{color: "#000", fontSize: 14, fontWeight: "bold"}}>{this.props.produk.nama_produk}</Text>
                         <View style={{flexDirection: "row"}}>
                             <Text style={{fontSize: 14, marginRight: 20}}>{this.props.produk.harga}</Text>
                             <Text style={{fontSize: 14, textDecorationLine:"line-through"}}>{this.props.harga}</Text>
@@ -85,7 +86,7 @@ export default class ItemProduk extends Component{
 
                     {/* BUTTON ACC TO CART */}
                     <TouchableOpacity 
-                        style={{backgroundColor: "#ff7143", width: 100, height: 35, alignItems: "center", justifyContent: "center", borderRadius: 8}}
+                        style={{backgroundColor: globalStyles.mainColor, width: 100, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 8}}
                         onPress={()=>this.props.tambah(this.state.counter)}
                     >
                         <Text style={{color: "white", fontWeight: "bold"}}>Tambah +</Text>

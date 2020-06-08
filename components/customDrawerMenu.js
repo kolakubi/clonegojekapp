@@ -21,7 +21,7 @@ export default class CustomDrawerMenu extends Component{
     render(){
         return(
             <View style={{flex: 1, paddingLeft: 10, paddingTop: 10}}>
-
+                 
                 <View style={{backgroundColor: "#fff", borderBottomColor: GlobalStyles.mainColor, borderBottomWidth: 2, paddingBottom: 10}}>
                     <View style={{height: 150, width: 150, backgroundColor: "yellow", alignItems: "center", justifyContent:"center", borderRadius: 75, overflow: "hidden"}}>
                         <Image source={JohnWick} style={{resizeMode:"contain", maxHeight: "100%"}} />

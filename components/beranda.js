@@ -3,7 +3,7 @@ import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage } from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage, ActivityIndicator } from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import GlobalStyles from './utility/globalStyles';
@@ -28,9 +28,9 @@ export default class Beranda extends Component{
 
         this.state = {
             getProduct: [
-                {id: "1", nama: "Telur Ayam Kampung 6 Butir", harga: 22000, image: produkTelur},
-                {id:'2', nama:'Tepung Rose Brand 1kg', harga:17000, image: produkTepung},
-                {id:'3', nama:'Minyak Goreng Vipco 1lt', harga:10500, image: produkMinyak},
+                // {id_produk: "1", nama_produk: "Telur Ayam Kampung 6 Butir", harga: 22000, hargaDiskon: 0, gambar_produk: produkTelur},
+                // {id_produk:'2', nama_produk:'Tepung Rose Brand 1kg', harga:17000, hargaDiskon: 15000, gambar_produk: produkTepung},
+                // {id_produk:'3', nama_produk:'Minyak Goreng Vipco 1lt', harga:10500, hargaDiskon: 0, gambar_produk: produkMinyak},
 
             ],
             cart: {
@@ -43,6 +43,28 @@ export default class Beranda extends Component{
                 Banner2,
                 Banner3
             ]
+        }
+    }
+
+    async componentDidMount(){
+        const key = JSON.parse(await AsyncStorage.getItem('user')).key;
+        // const key= "";
+        const ip = "192.168.0.19";
+
+        try{
+            const a = await fetch("http://"+ip+"/sembakoapi/api/products?ACCESS_TOKEN="+key);
+            const b = await a.json();
+
+            if(b){
+                this.setState({
+                    getProduct: b
+                })
+            }
+
+            console.log(b);
+        }
+        catch(err){
+            console.log('ada kesalahan')
         }
     }
 
@@ -165,31 +187,32 @@ export default class Beranda extends Component{
                         </View>
 
                         {/* MIDDLE SECTION */}
-                        <View style={{...GlobalStyles.shadowBox, width: "95%", marginTop: 10, borderWidth: 0.5, borderColor: "#fafafa", height: 100, marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff"}}>
+                        <View 
+                            style={{...GlobalStyles.shadowBox, width: "95%", marginTop: 10, borderWidth: 0.5, borderColor: "#fafafa", marginBottom: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: "#fff", padding: 10, borderRadius: 10}}>
 
                             {/* TRANSAKSI */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('transaksi')}>
-                                <Icon name="history" size={30} color={GlobalStyles.mainColor} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Transaksi</Text>
+                                <Icon name="history" size={25} color={GlobalStyles.mainColor} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 12, textAlign: "center"}}>Transaksi</Text>
                             </TouchableOpacity>
                             
                             {/* REQUEST */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={()=>this.navigationTo('request')}>
-                                <Icon name="list" size={30} color={GlobalStyles.mainColor} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Request</Text>
+                                <Icon name="list" size={25} color={GlobalStyles.mainColor} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 12, textAlign: "center"}}>Request</Text>
                             </TouchableOpacity>
 
                             {/* WHATSAPP  */}
                             <TouchableOpacity style={{alignItems:"center"}} onPress={this.openWhatsapp}>
-                                <Icon name="whatsapp" size={30} color={GlobalStyles.mainColor} />
-                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 14, textAlign: "center"}}>Pesan</Text>
+                                <Icon name="whatsapp" size={25} color={GlobalStyles.mainColor} />
+                                <Text style={{color: "#000", fontWeight: "bold", fontSize: 12, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* PRODUK */}
                         {this.state.getProduct.map((produk)=>(
                             <ItemProduk
-                                key={produk.id}
+                                key={produk.id_produk}
                                 produk={produk}
                                 navigation={this.props.navigation}
                                 tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}

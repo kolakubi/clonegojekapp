@@ -70,7 +70,7 @@ export default class TambahAlamat extends Component{
                                     />
                                     {/* <Button title="hapus" onPress={clearSearchs} /> */}
                                 </View>
-                                {isSearching && <ActivityIndicator size="large" color="red" />}
+                                {isSearching && <ActivityIndicator size="large" color={globalStyle.mainColor} />}
                                 <ScrollView>
                                     {locationResults.map((data)=>(
                                         <LocationItem 
