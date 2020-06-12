@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput, ScrollView, Picker} from 'react-native';
+import {View, Text, TouchableOpacity, Image, TextInput, ScrollView, Picker, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Avatar from '../../assets/user-avatar.jpg';
@@ -11,12 +11,56 @@ export default class Akun extends Component{
         super(props);
 
         this.state = {
-            nama: "Malmahsyar",
-            email: "mal.mahsyar@gmail.com",
-            noHp: "085611112222",
-            tanggalLahir: "08/30/1990",
-            kelamin: "Laki-laki"
+            nama: "xxx",
+            email: "xxx@gmail.com",
+            noHp: "xxx",
+            tanggalLahir: "xxx",
+            kelamin: "xxx"
         }
+    }
+
+    getUserData = async ()=>{
+        //const key = JSON.parse(await AsyncStorage.getItem('user')).key;
+        const userData= JSON.parse(await AsyncStorage.getItem('user'));
+
+        if(userData){
+            this.setState({
+                nama: userData.nama_user,
+                email: userData.email,
+                noHp: userData.nohp,
+                tanggalLahir: userData.tgl_daftar,
+                kelamin: userData.kelamin
+            })
+        }
+        else{
+            alert('tidak bisa mengambil data')
+        }
+
+        // USER DATA DI ASYNSTORAGE
+        // {
+        //     "date_created": "2020-05-30 00:29:36", 
+        //     "email": "jack@jack.com", 
+        //     "id": "3", 
+        //     "id_user": "2", 
+        //     "ignore_limits": "0", 
+        //     "ip_addresses": null, 
+        //     "is_private_key": "0", 
+        //     "join_date": "2020-05-29 23:52:52", 
+        //     "key": "tes123", 
+        //     "level": "2", 
+        //     "login_id": "2", 
+        //     "nama_user": "jack", 
+        //     "nohp": "081233334444", 
+        //     "password": "123456", 
+        //     "tgl_daftar": "2020-06-08 11:37:09", 
+        //     "user_id": "2", 
+        //     "username": "johnwick"
+        // }
+    }
+
+
+    async componentDidMount(){
+        await this.getUserData();
     }
 
     simpan = ()=>{
@@ -80,7 +124,11 @@ export default class Akun extends Component{
 
                         {/* NO HP */}
                         <Text style={{marginTop: 8, fontSize: 12, fontWeight: "bold"}}>Nomor Handphone</Text>
-                        <TextInput placeholder="No Hp" style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 8, paddingBottom: 8, fontSize: 14}} value={this.state.noHp}/>
+                        <TextInput 
+                            placeholder="No Hp" 
+                            style={{borderBottomWidth: 1, borderBottomColor: "#ff7143", color: "#000", paddingTop: 8, paddingBottom: 8, fontSize: 14}} 
+                            value={this.state.noHp}
+                        />
 
                         {/* TGL LAHIR */}
                         <Text style={{marginTop: 8, fontSize: 12, fontWeight: "bold"}}>Tanggal Lahir</Text>

@@ -28,9 +28,9 @@ export default class Beranda extends Component{
 
         this.state = {
             getProduct: [
-                // {id_produk: "1", nama_produk: "Telur Ayam Kampung 6 Butir", harga: 22000, hargaDiskon: 0, gambar_produk: produkTelur},
-                // {id_produk:'2', nama_produk:'Tepung Rose Brand 1kg', harga:17000, hargaDiskon: 15000, gambar_produk: produkTepung},
-                // {id_produk:'3', nama_produk:'Minyak Goreng Vipco 1lt', harga:10500, hargaDiskon: 0, gambar_produk: produkMinyak},
+                {id_produk: "1", nama_produk: "Telur Ayam Kampung 6 Butir", harga: 10000, hargaDiskon: 0, gambar_produk: produkTelur},
+                {id_produk:'2', nama_produk:'Tepung Rose Brand 1kg', harga:20000, hargaDiskon: 15000, gambar_produk: produkTepung},
+                {id_produk:'3', nama_produk:'Minyak Goreng Vipco 1lt', harga:30000, hargaDiskon: 0, gambar_produk: produkMinyak},
 
             ],
             cart: {
@@ -46,7 +46,7 @@ export default class Beranda extends Component{
         }
     }
 
-    async componentDidMount(){
+    getProductData = async ()=>{
         const key = JSON.parse(await AsyncStorage.getItem('user')).key;
         // const key= "";
         const ip = "192.168.0.19";
@@ -59,13 +59,16 @@ export default class Beranda extends Component{
                 this.setState({
                     getProduct: b
                 })
+                console.log(b);
             }
-
-            console.log(b);
         }
         catch(err){
             console.log('ada kesalahan')
         }
+    }
+
+    async componentDidMount(){
+        await this.getProductData();
     }
 
     updateItem = (data, index) => {
@@ -92,7 +95,20 @@ export default class Beranda extends Component{
         //console.log(this.state.cart);
     }
 
+    filterItem = (data) => {
+        console.log(this.state.cart.detailItem);
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                detailItem: this.state.cart.detailItem.filter((dota)=>{return dota.id_produk != data})
+            }
+        })
+    }
+
     tambahItem = (data) => {
+
+        console.log(this.state.cart.detailItem);
+        //console.log(data)
 
         const detailItem = this.state.cart.detailItem;
 
@@ -101,7 +117,7 @@ export default class Beranda extends Component{
             // loop daftar cart
             for(let i=0; i<detailItem.length; i++){
                 // jika item sdh masuk cart
-                if(data.id == detailItem[i].id){
+                if(data.id_produk == detailItem[i].id_produk){
                     // console.log('item kembar')
                     // update
                     return this.updateItem(data, i);
@@ -115,6 +131,13 @@ export default class Beranda extends Component{
             // push
             return this.pushItem(data);
         }
+    }
+
+    hapusItem = (produkId) => {
+        //console.log(produkId);
+
+        this.filterItem(produkId);
+        alert("produk berhasil dihapus")
     }
 
     navigationTo = (halaman) => {
@@ -216,6 +239,7 @@ export default class Beranda extends Component{
                                 produk={produk}
                                 navigation={this.props.navigation}
                                 tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
+                                hapus={(produkId)=>this.hapusItem(produkId)}
                             />
                         ))}
                         

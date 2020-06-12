@@ -6,7 +6,7 @@ import GlobalStyle from './utility/globalStyles';
 import ImageMaps from '../assets/maps-screenshoot.jpg';
 
 import {GoogleAutoComplete} from 'react-native-google-autocomplete';
-const API_KEYS = "AIzaSyD33T5gzUPZ9VBUudLSItOmgKUt5cmkSZk";
+const API_KEYS = "AIzaSyD33T5gzUPZ9VBUudLSItOmgKUt5cmkSZkxxxs";
 import LocationItem from './locationItem'
 
 export default class TambahAlamat extends Component{
@@ -49,16 +49,17 @@ export default class TambahAlamat extends Component{
                         minLength={7}
                         radius={"4000"}
                         components="country:id"
+                        queryTypes="geocode|establishment"
                     >
                         {({ 
                             handleTextChange, 
                             locationResults, 
                             isSearching, 
                             fetchDetails,
-                            clearSearchs
+                            // clearSearchs
                         })=>(
                             <React.Fragment>
-                                {/* {console.log('locationResults', locationResults)} */}
+                                {console.log('locationResults', locationResults)}
                                 <View>
                                     <TextInput 
                                         value={this.state.address}
@@ -70,7 +71,7 @@ export default class TambahAlamat extends Component{
                                     />
                                     {/* <Button title="hapus" onPress={clearSearchs} /> */}
                                 </View>
-                                {isSearching && <ActivityIndicator size="large" color={globalStyle.mainColor} />}
+                                {isSearching && <ActivityIndicator size="large" color={GlobalStyle.mainColor} />}
                                 <ScrollView>
                                     {locationResults.map((data)=>(
                                         <LocationItem 
@@ -78,7 +79,7 @@ export default class TambahAlamat extends Component{
                                             key={data.id}
                                             data={data}
                                             fetchDetails={fetchDetails}
-                                            setAddress={(address)=>this.setAlamat(address)}
+                                            // setAddress={(address)=>this.setAlamat(address)}
                                         />
                                     ))}
                                 </ScrollView>
