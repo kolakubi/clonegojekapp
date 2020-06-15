@@ -5,16 +5,22 @@ import GlobalStyle from './utility/globalStyles';
 export default class AlamatSayaComp extends Component{
     render(){
         return(
-            <View style={{...GlobalStyle.shadowBox, padding: 15, marginBottom: 15}}>
+            <View style={{...GlobalStyle.shadowBox, padding: 15, marginBottom: 20}}>
                 {/* ALAMAT */}
                 <View style={{marginBottom: 10}}>
-                <Text style={{fontWeight: "bold", fontSize: 16, color: "#000"}}>{this.props.alamat}</Text>
+                    <Text style={{fontWeight: "bold", fontSize: 16, color: "#000"}}>
+                        {this.props.alamat}
+                    </Text>
                 </View>
 
                 {/* NAMA & TELPON */}
                 <View style={{marginBottom: 10}}>
-                    <Text>{this.props.user}</Text>
-                <Text style={{color: GlobalStyle.mainColor, fontWeight: "bold"}}>{this.props.noHp}</Text>
+                    <Text>
+                        {this.props.nama_penerima}
+                    </Text>
+                    <Text style={{color: GlobalStyle.mainColor, fontWeight: "bold"}}>
+                        {this.props.telpon_penerima}
+                    </Text>
                 </View>
                 
                 {/* BUTTON PILIH */}

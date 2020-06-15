@@ -71,45 +71,77 @@ export default class Beranda extends Component{
         await this.getProductData();
     }
 
+    updateJumlahItem = (arr = null) => {
+        let a = 0;
+        if(arr){
+            arr.forEach(item => {
+                a += item.jumlah;
+            });
+        }
+        else{
+            this.state.cart.detailItem.forEach(item => {
+                a += item.jumlah;
+            });
+        }
+        
+        return a;
+    }
+
+    updateJumlahPembelian = (arr = null) => {
+        let b = 0;
+        if(arr){
+            arr.forEach(item => {
+                b += (item.harga*item.jumlah);
+            });
+        }
+        else{
+            this.state.cart.detailItem.forEach(item => {
+                b += (item.harga*item.jumlah);
+            });
+        }
+        
+        return b;
+    }
+
     updateItem = (data, index) => {
         this.setState({
             cart: {
                 ...this.state.cart,
-                jumlahItem: (this.state.cart.jumlahItem+= data.jumlah),
-                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
-                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah
+                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah,
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian(),
             }
         });
-        // console.log(this.state.cart);
     }
 
     pushItem = (data) => {
         this.setState({
             cart: {
                 ...this.state.cart,
-                jumlahItem: (this.state.cart.jumlahItem+=data.jumlah),
-                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
-                detailitem: this.state.cart.detailItem.push(data)
+                detailitem: this.state.cart.detailItem.push(data),
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian()
             }
         });
-        //console.log(this.state.cart);
     }
 
     filterItem = (data) => {
-        console.log(this.state.cart.detailItem);
+
+        const newArr = this.state.cart.detailItem.filter(item=> item.id_produk != data);
+        const a = this.updateJumlahItem(newArr);
+        const b = this.updateJumlahPembelian(newArr);
+        
         this.setState({
             cart: {
                 ...this.state.cart,
-                detailItem: this.state.cart.detailItem.filter((dota)=>{return dota.id_produk != data})
+                detailItem: newArr,
+                jumlahItem: a,
+                JumlahPembelian: b 
             }
         })
     }
 
     tambahItem = (data) => {
-
-        console.log(this.state.cart.detailItem);
-        //console.log(data)
-
         const detailItem = this.state.cart.detailItem;
 
         if(detailItem.length > 0){
@@ -134,10 +166,7 @@ export default class Beranda extends Component{
     }
 
     hapusItem = (produkId) => {
-        //console.log(produkId);
-
         this.filterItem(produkId);
-        alert("produk berhasil dihapus")
     }
 
     navigationTo = (halaman) => {
@@ -231,6 +260,10 @@ export default class Beranda extends Component{
                                 <Text style={{color: "#000", fontWeight: "bold", fontSize: 12, textAlign: "center"}}>Pesan</Text>
                             </TouchableOpacity>
                         </View>
+
+        {this.state.cart.detailItem.map((item)=>(
+            <Text>{item.nama_produk}, jumlah {item.jumlah}</Text>
+            ))}
 
                         {/* PRODUK */}
                         {this.state.getProduct.map((produk)=>(

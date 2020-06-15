@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {View, Text} from 'react-native';
+import {View, Text, AsyncStorage} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AlamatSayaComp from './alamatSayaComp';
 
@@ -13,20 +13,52 @@ export default class AlamatSaya extends Component{
 
         this.state = {
             dataAlamat: [ 
-                {
-                    alamatId: "1",
-                    alamat: "Jl. Persahabatan VI no 3, RT.10/RW.08, Klp Dua Wetan, Kec Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13730, Indonesia",
-                    user: "Mal",
-                    noHp: "085611112222"
-                },
-                {
-                    alamatId: "2",
-                    alamat: "Jl. Kelapa Dua Wetan III no 29 RT.06/RW.01, Klp Dua Wetan, Kec Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13730, Indonesia",
-                    user: "Mal",
-                    noHp: "085633334444"
-                }
+                // {
+                //     id_alamat: "1",
+                //     alamat: "Jl. Persahabatan VI no 3, RT.10/RW.08, Klp Dua Wetan, Kec Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13730, Indonesia",
+                //     nama_penerima: "Mal",
+                //     telpon_penerima: "085611112222"
+                // },
             ]
         }
+    }
+
+    getAddressData = async ()=>{
+        const key = JSON.parse(await AsyncStorage.getItem('user')).key;
+        const id_user= JSON.parse(await AsyncStorage.getItem('user')).id_user;
+        const ip = "192.168.0.19";
+        try{
+            const a = await fetch("http://"+ip+"/sembakoapi/api/addresses/?id="+id_user+"&ACCESS_TOKEN="+key);
+            const b = await a.json();
+
+            // JSON RESULT
+            // ------------------------------------------------
+            // {
+            //     "alamat": "Jalan Kelapa dua wetan III no 29 RT 06/RW 01 Ciracas, Jakarta Timur",
+            //     "id_alamat": "1", 
+            //     "id_user": "1", 
+            //     "nama_penerima": "Wisnu", 
+            //     "patokan_alamat": "masuk dari kampus Iprija dekat musholla nurul amin",
+            //     "telpon_penerima": "081211112222", 
+            //     "tgl_input": "2020-06-13 21:33:19"
+            // }
+
+            if(b){
+                if(b.status != false){
+                    this.setState({
+                        dataAlamat: b
+                    })
+                    console.log(b);
+                }
+            }
+        }
+        catch(err){
+            console.log('ada kesalahan')
+        }
+    }
+
+    async componentDidMount(){
+        await this.getAddressData();
     }
 
     navigateToTambahAlamat = () => {
@@ -39,10 +71,10 @@ export default class AlamatSaya extends Component{
 
                 {this.state.dataAlamat.map((val)=>(
                     <AlamatSayaComp
-                        key={val.alamatId}
-                        user={val.user}
+                        key={val.id_alamat}
+                        nama_penerima={val.nama_penerima}
                         alamat={val.alamat}
-                        noHp={val.noHp}
+                        telpon_penerima={val.telpon_penerima}
                     />
                 ))}
 
