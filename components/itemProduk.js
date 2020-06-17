@@ -35,7 +35,7 @@ export default class ItemProduk extends Component{
     }
 
     navigateToDetailProduk = () => {
-        this.props.navigation.navigate('itemProdukDetail');
+        this.props.navigation.navigate('itemProdukDetail', this.props.produk);
     }
 
     render(){

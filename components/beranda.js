@@ -28,9 +28,30 @@ export default class Beranda extends Component{
 
         this.state = {
             getProduct: [
-                {id_produk: "1", nama_produk: "Telur Ayam Kampung 6 Butir", harga: 10000, hargaDiskon: 0, gambar_produk: produkTelur},
-                {id_produk:'2', nama_produk:'Tepung Rose Brand 1kg', harga:20000, hargaDiskon: 15000, gambar_produk: produkTepung},
-                {id_produk:'3', nama_produk:'Minyak Goreng Vipco 1lt', harga:30000, hargaDiskon: 0, gambar_produk: produkMinyak},
+                {
+                    id_produk: "1", 
+                    nama_produk: "Telur Ayam Kampung 6 Butir", 
+                    harga: 10000, 
+                    hargaDiskon: 0, 
+                    gambar_produk: produkTelur,
+                    deskripsi: "Tidak hanya lezat dan mudah dimasak, telur ayam ini memiliki kandungan protein yang dibutuhkan oleh tubuh. berat 618 - 630gr"
+                },
+                {
+                    id_produk:'2', 
+                    nama_produk:'Tepung Rose Brand 1kg', 
+                    harga:20000, 
+                    hargaDiskon: 15000, 
+                    gambar_produk: produkTepung,
+                    deskripsi: "Tepung beras Rose Brand cocok untuk membuat roti dengan hasil yang mengembang sempurna dan mempunyai tekstur lembut"
+                },
+                {
+                    id_produk:'3', 
+                    nama_produk:'Minyak Goreng Vipco 1lt', 
+                    harga:30000, 
+                    hargaDiskon: 0, 
+                    gambar_produk: produkMinyak,
+                    deskripsi: "Minyak goreng Vipco jernih dan hasil gorengan anda pasti gurih dan enak tersedia kemasan 1ltr dan 2ltr. Murah, sehat, dan enak"
+                },
 
             ],
             cart: {
@@ -261,9 +282,10 @@ export default class Beranda extends Component{
                             </TouchableOpacity>
                         </View>
 
-        {this.state.cart.detailItem.map((item)=>(
-            <Text>{item.nama_produk}, jumlah {item.jumlah}</Text>
-            ))}
+                        {/* DEBUG CART SYSTEM */}
+                        {this.state.cart.detailItem.map((item)=>(
+                            <Text>{item.nama_produk}, jumlah {item.jumlah}</Text>
+                        ))}
 
                         {/* PRODUK */}
                         {this.state.getProduct.map((produk)=>(

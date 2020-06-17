@@ -12,22 +12,42 @@ export default class itemProdukDetail extends Component{
         alert('ditambahkan ke keranjang');
     }
 
+    componentDidMount(){
+        console.log(this.props.route.params)
+    }
+
     render(){
+
+        const produk = this.props.route.params;
+
         return(
             <View style={{...globalStyles.container, alignItems: "center", }}>
 
                 {/* THUMBNAIL */}
-                <Image source={gambarTelur} style={{height: 270, width: 270, resizeMode: "contain"}} />
+                <Image 
+                    source={produk.gambar_produk} 
+                    style={{height: 270, width: 270, resizeMode: "contain"}} 
+                />
 
                 <View style={{width: "100%", padding: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
-                    {/* DESKRIPSI */}
-                    <Text style={{fontSize: 16, fontWeight: "bold", color: "#000"}}>Telur Ayam Negeri 15 Butir</Text>
+                    {/* NAMA PRODUK */}
+                    <Text 
+                        style={{fontSize: 16, fontWeight: "bold", color: "#000"}}>
+                            {produk.nama_produk}
+                    </Text>
+
                     {/* HARGA */}
-                    <Text style={{fontSize: 16, fontWeight: "bold", color: globalStyles.mainColor}}>Rp 16.500</Text>
+                    <Text 
+                        style={{fontSize: 16, fontWeight: "bold", color: globalStyles.mainColor}}>
+                            {produk.harga}
+                    </Text>
                 </View>
 
                 {/* DESKRIPSI */}
-                <Text style={{width: "90%", fontSize: 16, color: "#525252", marginTop: 20}}>Tidak hanya lezat dan mudah dimasak, telur ayam ini memiliki kandungan protein yang dibutuhkan oleh tubuh. berat 618 - 630gr</Text>
+                <Text 
+                    style={{width: "90%", fontSize: 16, color: "#525252", marginTop: 20}}>
+                        {produk.deskripsi}
+                </Text>
 
                 {/* BUTTON ADD TO CART */}
                 <TouchableOpacity 
