@@ -8,6 +8,10 @@ import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage, 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import GlobalStyles from './utility/globalStyles';
 
+// REDUX
+import {connect} from 'react-redux';
+import actionTypes from '../redux/reducers/actionTypes'
+
 // DUMMY PRODUK
 import produkTelur from '../assets/produk/produk-telur.png';
 import produkTepung from '../assets/produk/produk-tepung.png';
@@ -21,7 +25,7 @@ import Banner1 from '../assets/banner-1.png';
 import Banner2 from '../assets/banner-2.jpg';
 import Banner3 from '../assets/banner-3.jpg';
 
-export default class Beranda extends Component{
+class Beranda extends Component{
 
     constructor(props){
         super(props);
@@ -88,10 +92,38 @@ export default class Beranda extends Component{
         }
     }
 
-    async componentDidMount(){
-        await this.getProductData();
+    getCartData = async () => {
+        try{
+            const a = JSON.parse(await AsyncStorage.getItem('cart'));
+
+            if(a){
+                this.setState({
+                    cart: a
+                })
+
+                console.log('cart data available')
+            }
+            else{
+                console.log('no cart data');
+            }
+        }
+        catch(err){
+            console.log('gagal ambil data cart, ', err)
+        }
     }
 
+    async componentDidMount(){
+        // await this.getProductData();
+        await this.getCartData();
+    }
+
+    saveCart = async () => {
+        await AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
+        console.log('cart saved')
+        console.log(await AsyncStorage.getItem('cart'))
+    }
+
+    // ===================================== START CHILD FUNCTION
     updateJumlahItem = (arr = null) => {
         let a = 0;
         if(arr){
@@ -124,7 +156,7 @@ export default class Beranda extends Component{
         return b;
     }
 
-    updateItem = (data, index) => {
+    updateTambahItem = (data, index) => {
         this.setState({
             cart: {
                 ...this.state.cart,
@@ -133,6 +165,25 @@ export default class Beranda extends Component{
                 JumlahPembelian: this.updateJumlahPembelian(),
             }
         });
+
+        this.saveCart();
+    }
+
+    updateKurangItem = (data, index) => {
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                detailitem: this.state.cart.detailItem[index].jumlah -= data.jumlah,
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian(),
+            }
+        });
+
+        if(this.state.cart.detailItem[index].jumlah < 1){
+            this.hapusItem(data.id_produk);
+        }
+
+        this.saveCart();
     }
 
     pushItem = (data) => {
@@ -144,9 +195,11 @@ export default class Beranda extends Component{
                 JumlahPembelian: this.updateJumlahPembelian()
             }
         });
+
+        this.saveCart();
     }
 
-    filterItem = (data) => {
+    filterItem = async (data) => {
 
         const newArr = this.state.cart.detailItem.filter(item=> item.id_produk != data);
         const a = this.updateJumlahItem(newArr);
@@ -159,8 +212,9 @@ export default class Beranda extends Component{
                 jumlahItem: a,
                 JumlahPembelian: b 
             }
-        })
+        });
     }
+    // ==================================== END OF CHILD FUNCTION
 
     tambahItem = (data) => {
         const detailItem = this.state.cart.detailItem;
@@ -173,7 +227,7 @@ export default class Beranda extends Component{
                 if(data.id_produk == detailItem[i].id_produk){
                     // console.log('item kembar')
                     // update
-                    return this.updateItem(data, i);
+                    return this.updateTambahItem(data, i);
                     break;
                 }
             }
@@ -186,8 +240,43 @@ export default class Beranda extends Component{
         }
     }
 
-    hapusItem = (produkId) => {
-        this.filterItem(produkId);
+    kurangItem = (data) => {
+        const detailItem = this.state.cart.detailItem;
+
+        if(detailItem.length > 0){
+            // console.log('sdh ada item')
+            // loop daftar cart
+            for(let i=0; i<detailItem.length; i++){
+                // jika item sdh masuk cart
+                if(data.id_produk == detailItem[i].id_produk){
+                    // console.log('item kembar')
+                    // update
+                    return this.updateKurangItem(data, i);
+                    break;
+                }
+            }
+        }
+    }
+
+    hapusItem = async (produkId) => {
+        await this.filterItem(produkId);
+        this.saveCart();
+    }
+
+    // Cek apakah item ada di Cart
+    onCart = async (produkId) => {
+
+        this.state.cart.detailItem.forEach(item => {
+            if(item.id_produk == produkId){
+                console.log("item ada")
+                return true;
+                // break;
+                
+            }
+            // console.log("di cart ", item.id_produk);
+            // console.log("di cek", produkId);
+        })
+        return false;
     }
 
     navigationTo = (halaman) => {
@@ -206,8 +295,8 @@ export default class Beranda extends Component{
     }
 
     render(){
+        console.log(this.props);
         return(
-
             <View style={{backgroundColor: "#fafafa"}}>
                 <ScrollView>
                     <View style={{alignItems: "center"}}>
@@ -294,7 +383,9 @@ export default class Beranda extends Component{
                                 produk={produk}
                                 navigation={this.props.navigation}
                                 tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
+                                kurang={(counter)=>this.kurangItem({...produk, jumlah: counter})}
                                 hapus={(produkId)=>this.hapusItem(produkId)}
+                                // onCart={this.onCart(produk.id_produk) ? 1 : 0}
                             />
                         ))}
                         
@@ -331,3 +422,20 @@ export default class Beranda extends Component{
         )
     }
 }
+
+const mapStateToProps = (state)=> {
+    return{
+        cart: state.cart
+    }
+}
+
+const mapDispatchToProps = (dispatch)=> {
+    return{
+        tambahCart: ()=> dispatch({
+            type: actionTypes.ADD_CART,
+            data: data 
+        })
+    }
+}
+
+export default connect(mapStateToProps)(Beranda)

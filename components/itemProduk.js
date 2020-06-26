@@ -6,24 +6,46 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import globalStyle from './utility/globalStyles';
 import globalStyles from './utility/globalStyles';
 
-export default class ItemProduk extends Component{
+//redux
+import {connect} from 'react-redux';
+import actionTypes from '../redux/reducers/actionTypes'
+
+class ItemProduk extends Component{
 
     constructor(props){
         super(props);
 
         this.state = {
-            counter: 1
+            onCart: false,
+            counter: 0
         }
     }
 
     componentDidMount(){
-        //console.log(this.props)
+        console.log("on cart = ", this.props.onCart)
+        if(this.props.onCart){
+            this.setState({
+                onCart: true
+            })
+        }
     }
 
     tambahCounter = () => {
-        this.setState({
-          counter: this.state.counter += 1  
-        })
+
+        if(this.state.counter == 0){
+            this.setState({
+                ...this.state,
+                onCart: true,
+                counter: this.state.counter+= 1
+            })
+        }
+        else{
+            this.setState({
+                counter: this.state.counter += 1  
+            })
+        }
+
+        this.props.tambah(1);
     }
 
     kurangCounter = () => {
@@ -32,7 +54,33 @@ export default class ItemProduk extends Component{
                 counter: this.state.counter -= 1
             })
         }
+        else{
+            this.setState({
+                counter: this.state.counter -= 1,
+                onCart: false
+            })
+        }
+
+        this.props.kurang(1);
     }
+
+    firstAdd = () => {
+        this.setState({
+            ...this.state,
+            onCart: true
+        })
+    }
+
+    hapusItem = () => {
+        this.setState({
+            ...this.setState,
+            counter: 0,
+            onCart: false
+        })
+        this.props.hapus(this.props.produk.id_produk)
+    }
+
+    
 
     navigateToDetailProduk = () => {
         this.props.navigation.navigate('itemProdukDetail', this.props.produk);
@@ -70,48 +118,69 @@ export default class ItemProduk extends Component{
                     
                 {/* BUTTON ACTION */}
                 <View style={{flex: 1, alignItems: "center", justifyContent: "flex-end", flexDirection: "row"}}> 
-
-                    <TouchableOpacity 
-                        style={{marginRight: 20}}
-                        onPress={()=>this.props.hapus(this.props.produk.id_produk)}
-                    >
-                        <Icon
-                            name="trash"
-                            size={20}
-                            color="grey"
-                        />
-                    </TouchableOpacity>
-
-                    {/* COUNTER */}
-                    <View style={{flexDirection: "row", marginRight: 20}}>
-
-                        {/* KURANG */}
-                        <TouchableOpacity 
-                            style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
-                            onPress={this.kurangCounter}>
-                            <Text style={{color: "#fff"}}>-</Text>
-                        </TouchableOpacity>
-
-                        <Text style={{marginHorizontal: 15}}>{this.state.counter}</Text>
-
-                        {/* TAMBAH */}
-                        <TouchableOpacity 
-                            style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
-                            onPress={this.tambahCounter}>
-                            <Text style={{color: "#fff"}}>+</Text>
-                        </TouchableOpacity>
-                    </View>
-
+                    
                     {/* BUTTON ACC TO CART */}
-                    <TouchableOpacity 
-                        style={{backgroundColor: globalStyles.mainColor, width: 100, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 8}}
-                        onPress={()=>this.props.tambah(this.state.counter)}
-                    >
-                        <Text style={{color: "white", fontWeight: "bold"}}>Tambah +</Text>
-                    </TouchableOpacity>
+                    {this.state.onCart 
+                        ? 
+                        /* HAPUS DARI CART */
+                        <View style={{flexDirection: "row"}}>
+                            <TouchableOpacity 
+                                style={{marginRight: 20}}
+                                onPress={this.hapusItem}
+                            >
+                                <Icon
+                                    name="trash"
+                                    size={20}
+                                    color="grey"
+                                />
+                            </TouchableOpacity>
+
+                            {/* COUNTER */}
+                            <View style={{flexDirection: "row", marginRight: 20}}>
+
+                                {/* KURANG */}
+                                <TouchableOpacity 
+                                    style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
+                                    onPress={this.kurangCounter}>
+                                    <Text style={{color: "#fff"}}>-</Text>
+                                </TouchableOpacity>
+
+                                <Text style={{marginHorizontal: 15}}>{this.state.counter}</Text>
+
+                                {/* TAMBAH */}
+                                <TouchableOpacity 
+                                    style={{height: 20, width: 20, backgroundColor: "#2e98f0", borderRadius: 10, alignItems: "center", justifyContent: "center"}}
+                                    onPress={this.tambahCounter}>
+                                    <Text style={{color: "#fff"}}>+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        : 
+                        <TouchableOpacity 
+                            style={{backgroundColor: globalStyles.mainColor, width: 100, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 8}}
+                            // onPress={()=>this.props.tambah(this.state.counter)}
+                            onPress={this.tambahCounter}
+                        >
+                            <Text style={{color: "white", fontWeight: "bold"}}>Tambah +</Text>
+                        </TouchableOpacity>
+                    }
                 </View>
 
             </View>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        cart: state.cart
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        tambahCounter: () => dispatch({type: actionTypes.ADD_COUNTER})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemProduk)

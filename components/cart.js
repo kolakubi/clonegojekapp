@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, TextInput, ScrollView, Image} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, ScrollView, Image, AsyncStorage} from 'react-native';
 
 import ItemProduk from './itemProduk';
 import AlamatSaya from './alamatSaya';
@@ -23,45 +23,159 @@ export default class Cart extends Component{
         super(props);
 
         this.state = {
-            getProduct: [
-                {id: "1", nama: "Telur Ayam Kampung 6 Butir", harga: 22000, image: produkTelur},
-                {id:'2', nama:'Tepung Rose Brand 1kg', harga:17000, image: produkTepung},
-                {id:'3', nama:'Minyak Goreng Vipco 1lt', harga:10500, image: produkMinyak}
-            ],
             cart: {
                 jumlahItem: 0,
                 JumlahPembelian: 0,
                 detailItem: []
+            },
+            detailPembayaran: {
+                totalHarga: 0,
+                diskon: 0,
+                biayaAdmin: 0,
+                biayaAntar: 0,
+                totalPembayaran: 0
             }
         }
     }
 
-    updateItem = (data, index) => {
+    getCartData = async () => {
+        try{
+            const a = JSON.parse(await AsyncStorage.getItem('cart'));
+
+            if(a){
+                this.setState({
+                    cart: a,
+                    detailPembayaran: {
+                        ...this.state.detailPembayaran,
+                        totalHarga: a.JumlahPembelian,
+                        totalPembayaran: a.JumlahPembelian
+                            // (
+                            // this.state.detailPembayaran.totalHarga +
+                            // this.state.detailPembayaran.biayaAdmin +
+                            // this.state.detailPembayaran.biayaAntar -
+                            // this.state.detailPembayaran.diskon
+                            // )
+                    }
+                })
+
+                console.log('cart data available')
+                console.log(this.state)
+            }
+            else{
+                console.log('no cart data');
+            }
+        }
+        catch(err){
+            console.log('gagal ambil data cart, ', err)
+        }
+    }
+
+    async componentDidMount(){
+        // await this.getProductData();
+        await this.getCartData();
+    }
+
+    saveCart = async () => {
+        await AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
+        console.log('cart saved')
+    }
+
+    // ===================================== START CHILD FUNCTION
+    updateJumlahItem = (arr = null) => {
+        let a = 0;
+        if(arr){
+            arr.forEach(item => {
+                a += item.jumlah;
+            });
+        }
+        else{
+            this.state.cart.detailItem.forEach(item => {
+                a += item.jumlah;
+            });
+        }
+        
+        return a;
+    }
+
+    updateJumlahPembelian = (arr = null) => {
+        let b = 0;
+        if(arr){
+            arr.forEach(item => {
+                b += (item.harga*item.jumlah);
+            });
+        }
+        else{
+            this.state.cart.detailItem.forEach(item => {
+                b += (item.harga*item.jumlah);
+            });
+        }
+        
+        return b;
+    }
+
+    updateTambahItem = (data, index) => {
         this.setState({
             cart: {
                 ...this.state.cart,
-                jumlahItem: (this.state.cart.jumlahItem+= data.jumlah),
-                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
-                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah
+                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah,
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian(),
             }
         });
-        // console.log(this.state.cart);
+
+        this.saveCart();
+    }
+
+    updateKurangItem = (data, index) => {
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                detailitem: this.state.cart.detailItem[index].jumlah -= data.jumlah,
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian(),
+            }
+        });
+
+        if(this.state.cart.detailItem[index].jumlah < 1){
+            this.hapusItem(data.id_produk);
+        }
+
+        this.saveCart();
     }
 
     pushItem = (data) => {
         this.setState({
             cart: {
                 ...this.state.cart,
-                jumlahItem: (this.state.cart.jumlahItem+=data.jumlah),
-                JumlahPembelian: (this.state.cart.JumlahPembelian+=(data.harga*data.jumlah)),
-                detailitem: this.state.cart.detailItem.push(data)
+                detailitem: this.state.cart.detailItem.push(data),
+                jumlahItem: this.updateJumlahItem(),
+                JumlahPembelian: this.updateJumlahPembelian()
             }
         });
-        //console.log(this.state.cart);
+
+        this.saveCart();
     }
 
-    tambahItem = (data) => {
+    filterItem = (data) => {
 
+        const newArr = this.state.cart.detailItem.filter(item=> item.id_produk != data);
+        const a = this.updateJumlahItem(newArr);
+        const b = this.updateJumlahPembelian(newArr);
+        
+        this.setState({
+            cart: {
+                ...this.state.cart,
+                detailItem: newArr,
+                jumlahItem: a,
+                JumlahPembelian: b 
+            }
+        })
+
+        this.saveCart();
+    }
+    // ==================================== END OF CHILD FUNCTION
+
+    tambahItem = (data) => {
         const detailItem = this.state.cart.detailItem;
 
         if(detailItem.length > 0){
@@ -69,10 +183,10 @@ export default class Cart extends Component{
             // loop daftar cart
             for(let i=0; i<detailItem.length; i++){
                 // jika item sdh masuk cart
-                if(data.id == detailItem[i].id){
+                if(data.id_produk == detailItem[i].id_produk){
                     // console.log('item kembar')
                     // update
-                    return this.updateItem(data, i);
+                    return this.updateTambahItem(data, i);
                     break;
                 }
             }
@@ -85,11 +199,31 @@ export default class Cart extends Component{
         }
     }
 
-    navigateToAlamatSaya = () => {
+    kurangItem = (data) => {
+        const detailItem = this.state.cart.detailItem;
 
-        console.log(this.props)
+        if(detailItem.length > 0){
+            // console.log('sdh ada item')
+            // loop daftar cart
+            for(let i=0; i<detailItem.length; i++){
+                // jika item sdh masuk cart
+                if(data.id_produk == detailItem[i].id_produk){
+                    // console.log('item kembar')
+                    // update
+                    return this.updateKurangItem(data, i);
+                    break;
+                }
+            }
+        }
+    }
+
+    hapusItem = (produkId) => {
+        this.filterItem(produkId);
+    }
+
+    navigateToAlamatSaya = () => {
+        // console.log(this.props)
         this.props.navigation.navigate('alamatSaya');
-        
     }
 
     render(){
@@ -117,10 +251,15 @@ export default class Cart extends Component{
                     <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Pesanan</Text>
                         
-                        {this.state.getProduct.map((produk)=>(
+                        {/* PRODUK */}
+                        {this.state.cart.detailItem.map((produk)=>(
                             <ItemProduk
+                                key={produk.id_produk}
                                 produk={produk}
+                                navigation={this.props.navigation}
                                 tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
+                                kurang={(counter)=>this.kurangItem({...produk, jumlah: counter})}
+                                hapus={(produkId)=>this.hapusItem(produkId)}
                             />
                         ))}
                     </View>
@@ -148,15 +287,15 @@ export default class Cart extends Component{
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Rincian Pembayaran</Text>
                         
                         <View style={{padding: 10, borderBottomColor: "green", borderBottomWidth: 0.5}}>
-                            <CartDeskripsi deskripsi="Harga" biaya="Rp 11.000" />
-                            <CartDeskripsi deskripsi="Diskon" biaya="Rp 0" />
-                            <CartDeskripsi deskripsi="Admin" biaya="Rp 0" />
-                            <CartDeskripsi deskripsi="Jasa Antar" biaya="Rp 0" />
+                            <CartDeskripsi deskripsi="Harga" biaya={this.state.detailPembayaran.totalHarga} />
+                            <CartDeskripsi deskripsi="Diskon" biaya={this.state.detailPembayaran.diskon} />
+                            <CartDeskripsi deskripsi="Admin" biaya={this.state.detailPembayaran.biayaAdmin} />
+                            <CartDeskripsi deskripsi="Jasa Antar" biaya={this.state.detailPembayaran.biayaAntar} />
                         </View>
                         
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                             <Text style={{fontWeight: "bold", fontSize: 17}}>Total Pembayaran</Text>
-                            <Text style={{fontWeight: "bold", fontSize: 17}}>Rp 11.000</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Rp {this.state.detailPembayaran.totalPembayaran}</Text>
                         </View>
                     </View>
 
