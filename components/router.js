@@ -51,7 +51,7 @@ export default class Router extends Component{
         }
 
         return(
-            <Stack.Navigator initialRouteName="welcome">
+            <Stack.Navigator initialRouteName="home">
                 <Stack.Screen name="welcome" component={Welcome} options={{headerShown: false}} />
                 <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
                 <Stack.Screen name="home" component={UserMenu} options={{headerShown: false}}/>

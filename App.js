@@ -7,8 +7,8 @@ import Router from './components/router';
 //redux
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import globalReducers from './redux/reducers/globalReducers';
-const globalStore = createStore(globalReducers);
+import globalReducer from './redux/reducers/globalReducers';
+const globalStore = createStore(globalReducer);
 
 
 class App extends Component{
