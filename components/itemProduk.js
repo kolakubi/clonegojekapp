@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, AsyncStorage} from 'react-native';
 import globalStyle from './utility/globalStyles';
 import globalStyles from './utility/globalStyles';
 
@@ -22,16 +22,21 @@ class ItemProduk extends Component{
     }
 
     componentDidMount(){
-        // console.log("on cart = ", this.props.onCart)
-        // if(this.props.onCart){
-        //     this.setState({
-        //         onCart: true
-        //     })
-        // }
+        if(this.props.onCart){
+            this.setState({
+                ...this.state,
+                onCart: true,
+                counter: this.props.onCart
+            })
+        }
+    }
+
+    saveCart = async () => {
+        await AsyncStorage.setItem('cart', JSON.stringify(this.props.cart));
+        console.log('cart saved')
     }
 
     tambahCounter = () => {
-
         if(this.state.counter == 0){
             this.setState({
                 ...this.state,
@@ -44,13 +49,10 @@ class ItemProduk extends Component{
                 counter: this.state.counter += 1  
             })
         }
-
         //redux
         this.props.tambahCart({...this.props.produk, jumlah: this.state.counter})
-
-        // console.log(this.state)
-
-        // this.props.tambah(1);
+        this.saveCart();
+        console.log(this.props.cart)
     }
 
     kurangCounter = () => {
@@ -65,18 +67,9 @@ class ItemProduk extends Component{
                 onCart: false
             })
         }
-
         //redux
         this.props.kurangCart({...this.props.produk, jumlah: this.state.counter})
-
-        // this.props.kurang(1);
-    }
-
-    firstAdd = () => {
-        this.setState({
-            ...this.state,
-            onCart: true
-        })
+        this.saveCart();
     }
 
     hapusItem = () => {
@@ -85,10 +78,10 @@ class ItemProduk extends Component{
             counter: 0,
             onCart: false
         })
-        // this.props.hapus(this.props.produk.id_produk)
 
         //redux
         this.props.hapusCart(this.props.produk)
+        this.saveCart();
     }
 
     
@@ -177,7 +170,6 @@ class ItemProduk extends Component{
                         </TouchableOpacity>
                     }
                 </View>
-
             </View>
         )
     }

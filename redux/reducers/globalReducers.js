@@ -22,7 +22,6 @@ const globalReducer = (state = initialState, action) => {
                 a += item.jumlah;
             });
         }
-        
         return a;
     }
 
@@ -51,25 +50,31 @@ const globalReducer = (state = initialState, action) => {
                 JumlahPembelian: updateJumlahPembelian()
             }
         }
-        // this.saveCart();
     }
 
     const updateTambahItem = (data, index) => {
+        const a = state.cart.detailItem;
+        a[index].jumlah += 1;
+
         return{
             ...state,
             cart: {
                 ...state.cart,
-                detailitem: state.cart.detailItem[index].jumlah += 1,
+                detailItem: a,
                 jumlahItem: updateJumlahItem(),
                 JumlahPembelian: updateJumlahPembelian(),
             }
         }
-        // this.saveCart();
     }
 
     const updateKurangItem = (data, index) => {
-
+        // jumlah item di array
+        // index ke [index]
         let a = state.cart.detailItem[index].jumlah -= 1;
+        // kurangin jumlah di array
+        // index ke [index]
+        const b = state.cart.detailItem;
+        b[index].jumlah -= 1;
 
         if(a <= 0){
             return hapusItem(data.id_produk);
@@ -79,14 +84,12 @@ const globalReducer = (state = initialState, action) => {
                 ...state,
                 cart: {
                     ...state.cart,
-                    detailitem: state.cart.detailItem[index].jumlah -= 1,
+                    detailItem: b,
                     jumlahItem: updateJumlahItem(),
                     JumlahPembelian: updateJumlahPembelian(),
                 }
             }
         }
-
-        // this.saveCart();
     }
 
     const filterItem = (idProduk) => {
@@ -99,7 +102,7 @@ const globalReducer = (state = initialState, action) => {
             ...state,
             cart: {
                 ...state.cart,
-                detailItem: [],
+                detailItem: newArr,
                 jumlahItem: a,
                 JumlahPembelian: b,
             }
@@ -109,19 +112,20 @@ const globalReducer = (state = initialState, action) => {
     const hapusItem = (produkId) => {
         console.log(filterItem(produkId));
         return filterItem(produkId);
-        // saveCart();
     }
+
+    ///////////////////////////////////
+    // BEGIN ACTION
+    ///////////////////////////////////
 
     if(action.type === actionTypes.ADD_CART){
         const detailItem = state.cart.detailItem;
 
         if(detailItem.length > 0){
-            // console.log('sdh ada item')
             // loop daftar cart
             for(let i=0; i<detailItem.length; i++){
                 // jika item sdh masuk cart
                 if(action.dataProduk.id_produk == detailItem[i].id_produk){
-                    // console.log('item kembar')
                     // update
                     return updateTambahItem(action.dataProduk, i);
                 }
@@ -129,28 +133,24 @@ const globalReducer = (state = initialState, action) => {
             return pushItem(action.dataProduk);
         }
         else{
-            // console.log('belum ada item sama sekali')
             // push
             return pushItem(action.dataProduk);
         }
     }
 
-    if(action.type === actionTypes.DETELE_CART){
+    if(action.type === actionTypes.DELETE_CART){
 
         if(state.cart.jumlahItem > 0){
             
             const detailItem = state.cart.detailItem;
     
             if(detailItem.length > 0){
-                // console.log('sdh ada item')
                 // loop daftar cart
                 for(let i=0; i<detailItem.length; i++){
                     // jika item sdh masuk cart
                     if(action.dataProduk.id_produk == detailItem[i].id_produk){
-                        // console.log('item kembar')
                         // update
                         return updateKurangItem(action.dataProduk, i);
-                        break;
                     }
                 }
             }
@@ -159,6 +159,13 @@ const globalReducer = (state = initialState, action) => {
 
     if(action.type === actionTypes.TRASH_CART){
         return hapusItem(action.dataProduk.id_produk);
+    }
+
+    if(action.type === actionTypes.GET_CART){
+        return {
+            ...state,
+                cart: action.cartFromStorage
+        }
     }
 
     return state;

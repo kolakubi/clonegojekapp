@@ -24,32 +24,32 @@ export default class Login extends Component{
         const ip = "192.168.0.19";
         const url2 = "http://192.168.0.19/sembakoapi/login?username="+username+"&password="+password;
 
-        try{
-            const a = await fetch("http://192.168.0.19/sembakoapi/login?username="+username+"&password="+password);
+        // try{
+        //     const a = await fetch("http://192.168.0.19/sembakoapi/login?username="+username+"&password="+password);
 
-            const b = await a.json();
+        //     const b = await a.json();
 
-            if(b != 0){
-                AsyncStorage.setItem('loggedIn', '1');
-                AsyncStorage.setItem('user', JSON.stringify(b));
+        //     if(b != 0){
+        //         AsyncStorage.setItem('loggedIn', '1');
+        //         AsyncStorage.setItem('user', JSON.stringify(b));
 
 
-                this.loginSukses();
-            }else{
-                this.loginGagal();
-            }
-        }
-        catch(err){
-            console.log('ada kesalahan')
-        }
-
-        // if(this.state.form.username === "mal" && this.state.form.password === "12345"){
-        //     await AsyncStorage.setItem('loggedIn', '1');
-        //     this.loginSukses();
+        //         this.loginSukses();
+        //     }else{
+        //         this.loginGagal();
+        //     }
         // }
-        // else{
-        //     this.loginGagal();
+        // catch(err){
+        //     console.log('ada kesalahan')
         // }
+
+        if(this.state.form.username === "mal" && this.state.form.password === "12345"){
+            await AsyncStorage.setItem('loggedIn', '1');
+            this.loginSukses();
+        }
+        else{
+            this.loginGagal();
+        }
     }
 
     loginSukses = () => {

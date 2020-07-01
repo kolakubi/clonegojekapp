@@ -58,11 +58,6 @@ class Beranda extends Component{
                 },
 
             ],
-            cart: {
-                jumlahItem: 0,
-                JumlahPembelian: 0,
-                detailItem: []
-            },
             banner: [
                 Banner1,
                 Banner2,
@@ -84,7 +79,7 @@ class Beranda extends Component{
                 this.setState({
                     getProduct: b
                 })
-                console.log(b);
+                // console.log(b);
             }
         }
         catch(err){
@@ -97,9 +92,7 @@ class Beranda extends Component{
             const a = JSON.parse(await AsyncStorage.getItem('cart'));
 
             if(a){
-                this.setState({
-                    cart: a
-                })
+                this.props.setCartData(a);
 
                 console.log('cart data available')
             }
@@ -114,168 +107,16 @@ class Beranda extends Component{
 
     async componentDidMount(){
         // await this.getProductData();
-        await this.getCartData();
-    }
-
-    saveCart = async () => {
-        await AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
-        console.log('cart saved')
-        console.log(await AsyncStorage.getItem('cart'))
-    }
-
-    // ===================================== START CHILD FUNCTION
-    updateJumlahItem = (arr = null) => {
-        let a = 0;
-        if(arr){
-            arr.forEach(item => {
-                a += item.jumlah;
-            });
-        }
-        else{
-            this.state.cart.detailItem.forEach(item => {
-                a += item.jumlah;
-            });
-        }
-        
-        return a;
-    }
-
-    updateJumlahPembelian = (arr = null) => {
-        let b = 0;
-        if(arr){
-            arr.forEach(item => {
-                b += (item.harga*item.jumlah);
-            });
-        }
-        else{
-            this.state.cart.detailItem.forEach(item => {
-                b += (item.harga*item.jumlah);
-            });
-        }
-        
-        return b;
-    }
-
-    updateTambahItem = (data, index) => {
-        this.setState({
-            cart: {
-                ...this.state.cart,
-                detailitem: this.state.cart.detailItem[index].jumlah += data.jumlah,
-                jumlahItem: this.updateJumlahItem(),
-                JumlahPembelian: this.updateJumlahPembelian(),
-            }
-        });
-
-        this.saveCart();
-    }
-
-    updateKurangItem = (data, index) => {
-        this.setState({
-            cart: {
-                ...this.state.cart,
-                detailitem: this.state.cart.detailItem[index].jumlah -= data.jumlah,
-                jumlahItem: this.updateJumlahItem(),
-                JumlahPembelian: this.updateJumlahPembelian(),
-            }
-        });
-
-        if(this.state.cart.detailItem[index].jumlah < 1){
-            this.hapusItem(data.id_produk);
-        }
-
-        this.saveCart();
-    }
-
-    pushItem = (data) => {
-        this.setState({
-            cart: {
-                ...this.state.cart,
-                detailitem: this.state.cart.detailItem.push(data),
-                jumlahItem: this.updateJumlahItem(),
-                JumlahPembelian: this.updateJumlahPembelian()
-            }
-        });
-
-        this.saveCart();
-    }
-
-    filterItem = async (data) => {
-
-        const newArr = this.state.cart.detailItem.filter(item=> item.id_produk != data);
-        const a = this.updateJumlahItem(newArr);
-        const b = this.updateJumlahPembelian(newArr);
-        
-        this.setState({
-            cart: {
-                ...this.state.cart,
-                detailItem: newArr,
-                jumlahItem: a,
-                JumlahPembelian: b 
-            }
-        });
-    }
-    // ==================================== END OF CHILD FUNCTION
-
-    tambahItem = (data) => {
-        const detailItem = this.state.cart.detailItem;
-
-        if(detailItem.length > 0){
-            // console.log('sdh ada item')
-            // loop daftar cart
-            for(let i=0; i<detailItem.length; i++){
-                // jika item sdh masuk cart
-                if(data.id_produk == detailItem[i].id_produk){
-                    // console.log('item kembar')
-                    // update
-                    return this.updateTambahItem(data, i);
-                    break;
-                }
-            }
-            return this.pushItem(data);
-        }
-        else{
-            // console.log('belum ada item sama sekali')
-            // push
-            return this.pushItem(data);
-        }
-    }
-
-    kurangItem = (data) => {
-        const detailItem = this.state.cart.detailItem;
-
-        if(detailItem.length > 0){
-            // console.log('sdh ada item')
-            // loop daftar cart
-            for(let i=0; i<detailItem.length; i++){
-                // jika item sdh masuk cart
-                if(data.id_produk == detailItem[i].id_produk){
-                    // console.log('item kembar')
-                    // update
-                    return this.updateKurangItem(data, i);
-                    break;
-                }
-            }
-        }
-    }
-
-    hapusItem = async (produkId) => {
-        await this.filterItem(produkId);
-        this.saveCart();
+        // await this.getCartData();
     }
 
     // Cek apakah item ada di Cart
-    onCart = async (produkId) => {
-
-        this.state.cart.detailItem.forEach(item => {
-            if(item.id_produk == produkId){
-                // console.log("item ada")
-                return true;
-                // break;
-                
+    onCart = (produkId) => {
+        for(let i=0;i<this.props.cart.detailItem.length; i++){
+            if(this.props.cart.detailItem[i].id_produk == produkId){
+                return this.props.cart.detailItem[i].jumlah;
             }
-            // console.log("di cart ", item.id_produk);
-            // console.log("di cek", produkId);
-        })
+        }
         return false;
     }
 
@@ -295,7 +136,7 @@ class Beranda extends Component{
     }
 
     render(){
-        console.log(this.props);
+        // console.log(this.props);
         return(
             <View style={{backgroundColor: "#fafafa"}}>
                 <ScrollView>
@@ -385,10 +226,7 @@ class Beranda extends Component{
                                 key={produk.id_produk}
                                 produk={produk}
                                 navigation={this.props.navigation}
-                                // tambah={(counter)=>this.tambahItem({...produk, jumlah: counter})}
-                                // kurang={(counter)=>this.kurangItem({...produk, jumlah: counter})}
-                                // hapus={(produkId)=>this.hapusItem(produkId)}
-                                // onCart={this.onCart(produk.id_produk) ? 1 : 0}
+                                onCart={this.onCart(produk.id_produk)}
                             />
                         ))}
                         
@@ -432,7 +270,16 @@ const mapStateToProps = (state)=> {
     }
 }
 
-export default connect(mapStateToProps)(Beranda)
+const mapDispatchToProps = (dispatch) => {
+    return{
+        setCartData: (data) => dispatch({
+            type: actionTypes.GET_CART,
+            cartFromStorage: data
+        })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Beranda)
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
