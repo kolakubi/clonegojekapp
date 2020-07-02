@@ -7,27 +7,19 @@ import AlamatSaya from './alamatSaya';
 import logoCod from '../assets/cod-logo.jpg';
 import logoMaps from '../assets/icon/map-marker-icon-mini.png';
 
-// DUMMY PRODUK
-import produkTelur from '../assets/produk/produk-telur.png';
-import produkTepung from '../assets/produk/produk-tepung.png';
-import produkMinyak from '../assets/produk/produk-minyak-goreng-vipco.png';
-
 import GlobalStyle from './utility/globalStyles';
-
-
 import CartDeskripsi from './cartDeskripsi';
 
-export default class Cart extends Component{
+// REDUX
+import {connect} from 'react-redux';
+import actionTypes from '../redux/reducers/actionTypes';
+
+class Cart extends Component{
 
     constructor(props){
         super(props);
 
         this.state = {
-            cart: {
-                jumlahItem: 0,
-                JumlahPembelian: 0,
-                detailItem: []
-            },
             detailPembayaran: {
                 totalHarga: 0,
                 diskon: 0,
@@ -38,49 +30,16 @@ export default class Cart extends Component{
         }
     }
 
-    getCartData = async () => {
-        try{
-            // const a = JSON.parse(await AsyncStorage.getItem('cart'));
-            const a = this.props.cart;
-            if(a){
-                this.setState({
-                    cart: a,
-                    detailPembayaran: {
-                        ...this.state.detailPembayaran,
-                        totalHarga: a.JumlahPembelian,
-                        totalPembayaran: a.JumlahPembelian
-                            // (
-                            // this.state.detailPembayaran.totalHarga +
-                            // this.state.detailPembayaran.biayaAdmin +
-                            // this.state.detailPembayaran.biayaAntar -
-                            // this.state.detailPembayaran.diskon
-                            // )
-                    }
-                })
-
-                console.log('cart data available')
-            }
-            else{
-                console.log('no cart data');
+    onCart = (produkId) => {
+        for(let i=0;i<this.props.cart.detailItem.length; i++){
+            if(this.props.cart.detailItem[i].id_produk == produkId){
+                return this.props.cart.detailItem[i].jumlah;
             }
         }
-        catch(err){
-            console.log('gagal ambil data cart, ', err)
-        }
-    }
-
-    async componentDidMount(){
-        // await this.getProductData();
-        await this.getCartData();
-    }
-
-    saveCart = async () => {
-        await AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
-        console.log('cart saved')
+        return false;
     }
 
     navigateToAlamatSaya = () => {
-        // console.log(this.props)
         this.props.navigation.navigate('alamatSaya');
     }
 
@@ -110,13 +69,18 @@ export default class Cart extends Component{
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Pesanan</Text>
                         
                         {/* PRODUK */}
-                        {this.state.cart.detailItem.map((produk)=>(
-                            <ItemProduk
-                                key={produk.id_produk}
-                                produk={produk}
-                                navigation={this.props.navigation}
-                            />
-                        ))}
+                        {
+                            this.props.cart.detailItem.length > 0 ? 
+                            this.props.cart.detailItem.map((produk)=>(
+                                <ItemProduk
+                                    key={produk.id_produk}
+                                    produk={produk}
+                                    navigation={this.props.navigation}
+                                    onCart={this.onCart(produk.id_produk)}
+                                />
+                            )) :
+                            <Text>Cart Kosong</Text>
+                        }
                     </View>
 
                     {/* PEMBAYARAN */}
@@ -142,7 +106,7 @@ export default class Cart extends Component{
                         <Text style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10, marginBottom: 20}}>Rincian Pembayaran</Text>
                         
                         <View style={{padding: 10, borderBottomColor: "green", borderBottomWidth: 0.5}}>
-                            <CartDeskripsi deskripsi="Harga" biaya={this.state.detailPembayaran.totalHarga} />
+                            <CartDeskripsi deskripsi="Harga" biaya={this.props.cart.JumlahPembelian} />
                             <CartDeskripsi deskripsi="Diskon" biaya={this.state.detailPembayaran.diskon} />
                             <CartDeskripsi deskripsi="Admin" biaya={this.state.detailPembayaran.biayaAdmin} />
                             <CartDeskripsi deskripsi="Jasa Antar" biaya={this.state.detailPembayaran.biayaAntar} />
@@ -150,7 +114,7 @@ export default class Cart extends Component{
                         
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                             <Text style={{fontWeight: "bold", fontSize: 17}}>Total Pembayaran</Text>
-                            <Text style={{fontWeight: "bold", fontSize: 17}}>Rp {this.state.detailPembayaran.totalPembayaran}</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Rp {this.props.cart.JumlahPembelian}</Text>
                         </View>
                     </View>
 
@@ -169,3 +133,11 @@ export default class Cart extends Component{
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return{
+        cart: state.cart
+    }
+}
+
+export default connect(mapStateToProps)(Cart)

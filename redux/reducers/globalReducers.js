@@ -55,7 +55,6 @@ const globalReducer = (state = initialState, action) => {
     const updateTambahItem = (data, index) => {
         const a = state.cart.detailItem;
         a[index].jumlah += 1;
-
         return{
             ...state,
             cart: {
@@ -75,7 +74,6 @@ const globalReducer = (state = initialState, action) => {
         // index ke [index]
         const b = state.cart.detailItem;
         b[index].jumlah -= 1;
-
         if(a <= 0){
             return hapusItem(data.id_produk);
         }
@@ -93,11 +91,9 @@ const globalReducer = (state = initialState, action) => {
     }
 
     const filterItem = (idProduk) => {
-
         const newArr = state.cart.detailItem.filter(item => item.id_produk != idProduk);
         const a = updateJumlahItem(newArr);
         const b = updateJumlahPembelian(newArr);
-        
         return{
             ...state,
             cart: {
@@ -114,9 +110,9 @@ const globalReducer = (state = initialState, action) => {
         return filterItem(produkId);
     }
 
-    ///////////////////////////////////
+    //////////////////////////////////////////////////////
     // BEGIN ACTION
-    ///////////////////////////////////
+    //////////////////////////////////////////////////////
 
     if(action.type === actionTypes.ADD_CART){
         const detailItem = state.cart.detailItem;
