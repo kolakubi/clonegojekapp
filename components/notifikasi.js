@@ -32,15 +32,22 @@ export default class Notifikasi extends Component{
         return(
             <View style={{...GlobalStyle.container, backgroundColor: "#fafafa"}}>
 
-
-                {this.state.notif.map((val)=>(
+                {this.state.notif.length > 0 ? 
+                this.state.notif.map((val)=>(
                     <NotifikasiItem
                         key={val.idNotif}
                         judulNotif={val.judulNotif}
                         isiNotif={val.isiNotif}
                         dibaca={val.dibaca}
                     />
-                ))}
+                )) :
+                <TouchableOpacity 
+                    style={{...GlobalStyle.shadowBox, justifyContent: "space-between", paddingVertical: 20, paddingHorizontal: 10, borderWidth: 0.5, borderColor: "#fafafa", marginBottom: 15, backgroundColor: "#fff"}}
+                    onPress={this.navigateToTambahAlamat}>
+
+                    <Text style={{color: "#000", fontSize: 14}}>Belum ada notifikasi</Text>
+                </TouchableOpacity>
+            }
                 
         
             </View>

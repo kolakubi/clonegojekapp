@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {View, Text, TouchableOpacity, Image, AsyncStorage} from 'react-native';
 import globalStyle from './utility/globalStyles';
-import globalStyles from './utility/globalStyles';
 
 //redux
 import {connect} from 'react-redux';
@@ -52,7 +51,6 @@ class ItemProduk extends Component{
         //redux
         this.props.tambahCart({...this.props.produk, jumlah: this.state.counter})
         this.saveCart();
-        // console.log(this.props.cart)
     }
 
     kurangCounter = () => {
@@ -83,8 +81,6 @@ class ItemProduk extends Component{
         this.props.hapusCart(this.props.produk)
         this.saveCart();
     }
-
-    
 
     navigateToDetailProduk = () => {
         this.props.navigation.navigate('itemProdukDetail', this.props.produk);
@@ -163,7 +159,7 @@ class ItemProduk extends Component{
                         </View>
                         : 
                         <TouchableOpacity 
-                            style={{backgroundColor: globalStyles.mainColor, width: 100, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 8}}
+                            style={{backgroundColor: globalStyle.mainColor, width: 100, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 8}}
                             onPress={this.tambahCounter}
                         >
                             <Text style={{color: "white", fontWeight: "bold"}}>Tambah +</Text>
@@ -175,6 +171,7 @@ class ItemProduk extends Component{
     }
 }
 
+// REDUX
 const mapStateToProps = (state) => {
     return {
         cart: state.cart
@@ -188,7 +185,7 @@ const mapDispatchToProps = (dispatch) => {
             dataProduk: data
         }),
         kurangCart: (data) => dispatch({
-            type: actionTypes.DETELE_CART,
+            type: actionTypes.DELETE_CART,
             dataProduk: data
         }),
         hapusCart: (data) => dispatch({

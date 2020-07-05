@@ -6,6 +6,17 @@ const initialState = {
         JumlahPembelian: 0,
         detailItem: []
     },
+    alamat: {
+        id_alamat: "",
+        alamat: "",
+        nama_penerima: "",
+        telpon_penerima: ""
+    },
+    checkout: {
+        alamat: {},
+        cart: [],
+        catatanPembelian: ""
+    }
 }
 
 const globalReducer = (state = initialState, action) => {
@@ -160,7 +171,20 @@ const globalReducer = (state = initialState, action) => {
     if(action.type === actionTypes.GET_CART){
         return {
             ...state,
-                cart: action.cartFromStorage
+                cart: {
+                    ...state.cart,
+                    detailItem: action.cartFromStorage.detailItem,
+                    jumlahItem: action.cartFromStorage.jumlahItem,
+                    JumlahPembelian: action.cartFromStorage.JumlahPembelian
+                } 
+                
+        }
+    }
+
+    if(action.type === actionTypes.CHOOSE_ADDRESS){
+        return {
+            ...state,
+            alamat: action.alamat
         }
     }
 

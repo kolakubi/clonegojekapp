@@ -6,19 +6,28 @@ import AlamatSayaComp from './alamatSayaComp';
 
 import GlobalStyle from './utility/globalStyles';
 
-export default class AlamatSaya extends Component{
+// REDUX
+import {connect} from 'react-redux';
+
+class AlamatSaya extends Component{
 
     constructor(props){
         super(props);
 
         this.state = {
             dataAlamat: [ 
-                // {
-                //     id_alamat: "1",
-                //     alamat: "Jl. Persahabatan VI no 3, RT.10/RW.08, Klp Dua Wetan, Kec Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13730, Indonesia",
-                //     nama_penerima: "Mal",
-                //     telpon_penerima: "085611112222"
-                // },
+                {
+                    id_alamat: "1",
+                    alamat: "Jl. Persahabatan VI no 3, RT.10/RW.08, Klp Dua Wetan, Kec Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13730, Indonesia",
+                    nama_penerima: "Mal",
+                    telpon_penerima: "085611112222"
+                },
+                {
+                    id_alamat: "2",
+                    alamat: "Jl. kampung baru no 9 RT 06/RW.09, ciracas",
+                    nama_penerima: "Ryan",
+                    telpon_penerima: "081233445555"
+                },
             ]
         }
     }
@@ -53,12 +62,19 @@ export default class AlamatSaya extends Component{
             }
         }
         catch(err){
-            console.log('ada kesalahan')
+            console.log('ada kesalahan: ', err)
         }
     }
 
     async componentDidMount(){
-        await this.getAddressData();
+        // await this.getAddressData();
+    }
+
+    dipilih = (alamatId) => {
+        if(this.props.alamat.id_alamat == alamatId){
+            return true;
+        }
+        return false;
     }
 
     navigateToTambahAlamat = () => {
@@ -72,9 +88,8 @@ export default class AlamatSaya extends Component{
                 {this.state.dataAlamat.map((val)=>(
                     <AlamatSayaComp
                         key={val.id_alamat}
-                        nama_penerima={val.nama_penerima}
-                        alamat={val.alamat}
-                        telpon_penerima={val.telpon_penerima}
+                        data={val}
+                        dipilih={this.dipilih(val.id_alamat)}
                     />
                 ))}
 
@@ -91,3 +106,11 @@ export default class AlamatSaya extends Component{
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        alamat: state.alamat
+    }
+}
+
+export default connect(mapStateToProps)(AlamatSaya)

@@ -43,6 +43,25 @@ class Cart extends Component{
         this.props.navigation.navigate('alamatSaya');
     }
 
+    cekDataCheckout = () => {
+        if(this.props.alamat.id_alamat
+            && this.props.cart.detailItem.length > 0){
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    submitCheckout = () => {
+        if(this.cekDataCheckout()){
+            alert("Checkout Berhasil");
+        }
+        else{
+            alert('mohon lengkapi data');
+        }
+    }
+
     render(){
         return(
             <ScrollView style={{backgroundColor: "#fafafa"}}>
@@ -53,15 +72,49 @@ class Cart extends Component{
 
                         <Text 
                             style={{fontWeight: "bold", fontSize: 16, borderBottomColor: "green", borderBottomWidth: 0.5, paddingBottom: 10}}
-                            >Dikirim</Text>
+                            >Dikirim Ke:
+                        </Text>
                         
-                        <TouchableOpacity onPress={this.navigateToAlamatSaya}>
-                            <View 
-                                style={{paddingVertical: 10, flexDirection: "row", alignItems: "center"}} >
-                                <Image source={logoMaps} style={{height: 40, width: 40, resizeMode:"contain"}} />
-                                <Text style={{fontSize: 14}}>Pilih Alamat Pengiriman</Text>
+                        {
+                            this.props.alamat.id_alamat ?
+                            // JIKA ALAMAT SUDAH DIPILIH
+                            <View>
+                                {/* DETAIL ALAMAT */}
+                                <View style={{marginBottom: 10}}>
+                                    <Text style={{fontWeight: "bold", fontSize: 16, color: "#000"}}>
+                                        {this.props.alamat.alamat}
+                                    </Text>
+                                </View>
+
+                                {/* NAMA & TELPON */}
+                                <View style={{marginBottom: 10}}>
+                                    <Text>
+                                        {this.props.alamat.nama_penerima}
+                                    </Text>
+                                    <Text style={{color: GlobalStyle.mainColor, fontWeight: "bold"}}>
+                                        {this.props.alamat.telpon_penerima}
+                                    </Text>
+                                </View>
+
+                                <TouchableOpacity onPress={this.navigateToAlamatSaya}>
+                                    <View 
+                                        style={{paddingVertical: 10, flexDirection: "row", alignItems: "center"}} >
+                                        <Image source={logoMaps} style={{height: 40, width: 40, resizeMode:"contain"}} />
+                                        <Text style={{fontSize: 14}}>Ganti Alamat</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
+                            :
+                            // JIKA ALAMAT BELUM DIPILIH
+                            <TouchableOpacity onPress={this.navigateToAlamatSaya}>
+                                <View 
+                                    style={{paddingVertical: 10, flexDirection: "row", alignItems: "center"}} >
+                                    <Image source={logoMaps} style={{height: 40, width: 40, resizeMode:"contain"}} />
+                                    <Text style={{fontSize: 14}}>Pilih Alamat Pengiriman</Text>
+                                </View>
+                            </TouchableOpacity>
+                        }
+                        
                     </View>
 
                     {/* PESANAN */}
@@ -70,7 +123,8 @@ class Cart extends Component{
                         
                         {/* PRODUK */}
                         {
-                            this.props.cart.detailItem.length > 0 ? 
+                            this.props.cart.detailItem.length > 0 ?
+                            // JIKA CART TIDAK KOSONG
                             this.props.cart.detailItem.map((produk)=>(
                                 <ItemProduk
                                     key={produk.id_produk}
@@ -78,7 +132,9 @@ class Cart extends Component{
                                     navigation={this.props.navigation}
                                     onCart={this.onCart(produk.id_produk)}
                                 />
-                            )) :
+                            )) 
+                            :
+                            // JIKA CART KOSONG
                             <Text>Cart Kosong</Text>
                         }
                     </View>
@@ -121,7 +177,10 @@ class Cart extends Component{
                     {/* BUTTON PESAN SEKARANG */}
                     <View style={{...GlobalStyle.shadowBox, width: "95%", borderWidth: 0.5, borderColor: "#fafafa", borderRadius: 5, padding: 20, marginBottom: 20, backgroundColor: "#fff"}}>
                         
-                        <TouchableOpacity style={{paddingVertical: 10, backgroundColor: "#ff7143", borderRadius: 5}}>
+                        <TouchableOpacity 
+                            style={{paddingVertical: 10, backgroundColor: "#ff7143", borderRadius: 5}}
+                            onPress={this.submitCheckout}
+                        >
                             <Text style={{color: "#fff", fontWeight: "bold", fontSize: 17, textAlign: "center"}}>Pesan Sekarang</Text>
                         </TouchableOpacity>
                         
@@ -136,7 +195,9 @@ class Cart extends Component{
 
 const mapStateToProps = (state) => {
     return{
-        cart: state.cart
+        cart: state.cart,
+        checkout: state.checkout,
+        alamat: state.alamat
     }
 }
 

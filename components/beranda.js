@@ -8,6 +8,8 @@ import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage, 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import GlobalStyles from './utility/globalStyles';
 
+import { useFocusEffect } from '@react-navigation/native';
+
 // REDUX
 import {connect} from 'react-redux';
 import actionTypes from '../redux/reducers/actionTypes';
@@ -18,6 +20,7 @@ import produkTepung from '../assets/produk/produk-tepung.png';
 import produkMinyak from '../assets/produk/produk-minyak-goreng-vipco.png';
 
 import ItemProduk from './itemProduk';
+import ItemProdukLoading from './itemProdukLoading';
 
 // SLIDER
 import { SliderBox } from "react-native-image-slider-box";
@@ -62,7 +65,8 @@ class Beranda extends Component{
                 Banner1,
                 Banner2,
                 Banner3
-            ]
+            ],
+            isLoading: true
         }
     }
 
@@ -83,7 +87,7 @@ class Beranda extends Component{
             }
         }
         catch(err){
-            console.log('ada kesalahan')
+            console.log('ada kesalahan', err)
         }
     }
 
@@ -92,7 +96,9 @@ class Beranda extends Component{
             const a = JSON.parse(await AsyncStorage.getItem('cart'));
 
             if(a){
+                // dispatch redux
                 this.props.setCartData(a);
+                // return a
 
                 console.log('cart data available')
             }
@@ -105,9 +111,37 @@ class Beranda extends Component{
         }
     }
 
+    // react navigation function
+    abc = () => {
+        useFocusEffect(
+            React.useCallback(() => {
+                const unsubscribe = this.getCartData();
+    
+                return () => unsubscribe();
+            }, [])
+        );
+    }
+
     async componentDidMount(){
+        // loading screen
+        setTimeout(()=>{
+            this.setState({
+                ...this.state,
+                isLoading: false
+            })
+        }, 1500)
         // await this.getProductData();
         // await this.getCartData();
+        // this.props.setCartData(this.abc());
+        // useFocusEffect(
+        //     React.useCallback(() => {
+        //         const unsubscribe = this.getCartData();
+                
+        //         this.props.setCartData(() => unsubscribe());
+        //         // return () => unsubscribe();
+        //     }, [])
+        // );
+        // console.log(this.props.cart)
     }
 
     // Cek apakah item ada di Cart
@@ -221,14 +255,26 @@ class Beranda extends Component{
                         } */}
 
                         {/* PRODUK */}
-                        {this.state.getProduct.map((produk)=>(
-                            <ItemProduk
-                                key={produk.id_produk}
-                                produk={produk}
-                                navigation={this.props.navigation}
-                                onCart={this.onCart(produk.id_produk)}
-                            />
-                        ))}
+                        {this.state.isLoading ?
+                            // JIKA SEDANG LOADING
+                            // AMBIL PRODUK
+                            <View style={{width: "97%"}}>
+                                <ItemProdukLoading />
+                                <ItemProdukLoading />
+                                <ItemProdukLoading />
+                                <ItemProdukLoading />
+                            </View>
+                            :
+                            // JIKA TIDAK LOAADING
+                            this.state.getProduct.map((produk)=>(
+                                <ItemProduk
+                                    key={produk.id_produk}
+                                    produk={produk}
+                                    navigation={this.props.navigation}
+                                    onCart={this.onCart(produk.id_produk)}
+                                />
+                            ))
+                        }
                         
                         <View style={{height: 100}}></View>
 
