@@ -10,6 +10,7 @@ class AlamatSayaComp extends Component{
 
     pilihAlamat = (data) => {
         this.props.pilihAlamat(data);
+        this.props.navigation.navigate('cart');
     }
 
     componentDidMount(){

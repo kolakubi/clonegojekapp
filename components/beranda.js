@@ -3,7 +3,7 @@ import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage, ActivityIndicator } from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, Linking, AsyncStorage, ActivityIndicator, Button, Alert } from 'react-native';
 
 import logoSembako from '../assets/logo-paketsembako-mini.png';
 import GlobalStyles from './utility/globalStyles';
@@ -123,25 +123,35 @@ class Beranda extends Component{
     }
 
     async componentDidMount(){
-        // loading screen
+        // if(this.props.cart.detailItem.length>0){
+        //     // loading screen
+        //     setTimeout(()=>{
+        //         this.setState({
+        //             ...this.state,
+        //             getProduct: [
+        //                 ...this.state.getProduct, 
+        //                 this.props.cart.detailItem
+        //             ]
+        //             ,
+        //             isLoading: false
+        //         })
+        //     }, 1500)
+        // }
+        // else{
+        //     // loading screen
+        //     setTimeout(()=>{
+        //         this.setState({
+        //             ...this.state,
+        //             isLoading: false
+        //         })
+        //     }, 1500)
+        // }
         setTimeout(()=>{
             this.setState({
                 ...this.state,
                 isLoading: false
             })
         }, 1500)
-        // await this.getProductData();
-        // await this.getCartData();
-        // this.props.setCartData(this.abc());
-        // useFocusEffect(
-        //     React.useCallback(() => {
-        //         const unsubscribe = this.getCartData();
-                
-        //         this.props.setCartData(() => unsubscribe());
-        //         // return () => unsubscribe();
-        //     }, [])
-        // );
-        // console.log(this.props.cart)
     }
 
     // Cek apakah item ada di Cart
@@ -151,7 +161,7 @@ class Beranda extends Component{
                 return this.props.cart.detailItem[i].jumlah;
             }
         }
-        return false;
+        return 0;
     }
 
     navigationTo = (halaman) => {
@@ -265,6 +275,14 @@ class Beranda extends Component{
                                 <ItemProdukLoading />
                             </View>
                             :
+                            // this.props.cart.detailItem.map((produk)=>(
+                            //     <ItemProduk
+                            //         key={produk.id_produk}
+                            //         produk={produk}
+                            //         navigation={this.props.navigation}
+                            //         onCart={this.onCart(produk.id_produk)}
+                            //     />
+                            // )) 
                             // JIKA TIDAK LOAADING
                             this.state.getProduct.map((produk)=>(
                                 <ItemProduk

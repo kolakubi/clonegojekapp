@@ -2,12 +2,12 @@ import React from 'react';
 import {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import {View, Text, TouchableOpacity, Image, AsyncStorage} from 'react-native';
+import {View, Text, TouchableOpacity, Image, AsyncStorage, Alert} from 'react-native';
 import globalStyle from './utility/globalStyles';
 
 //redux
 import {connect} from 'react-redux';
-import actionTypes from '../redux/reducers/actionTypes'
+import actionTypes from '../redux/reducers/actionTypes';
 
 class ItemProduk extends Component{
 
@@ -21,6 +21,7 @@ class ItemProduk extends Component{
     }
 
     componentDidMount(){
+        console.log(this.props.onCart)
         if(this.props.onCart){
             this.setState({
                 ...this.state,
@@ -86,6 +87,24 @@ class ItemProduk extends Component{
         this.props.navigation.navigate('itemProdukDetail', this.props.produk);
     }
 
+    hapusItemNotif = () =>
+        Alert.alert(
+            "Hapus Item",
+            "Yakin ingin menghapus item ini?",
+            [
+                {   
+                    text: "Ya", onPress: () => this.hapusItem() 
+                },
+                {
+                    text: "Tidak",
+                    // onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                }
+            ],
+            { cancelable: false }
+        );
+
+
     render(){
         return(
             <View 
@@ -107,10 +126,14 @@ class ItemProduk extends Component{
                         {/* HARGA */}
                         <View style={{flexDirection: "row"}}>
                             {this.props.produk.hargaDiskon ? 
-                                <Text style={{fontSize: 14, textDecorationLine:"line-through", marginRight: 10}}>{this.props.produk.hargaDiskon}</Text>
+                                <Text style={{fontSize: 14, textDecorationLine:"line-through", marginRight: 10}}>
+                                    Rp {this.props.produk.hargaDiskon}
+                                </Text>
                             : <View></View>
                             }
-                            <Text style={{fontSize: 14}}>{this.props.produk.harga}</Text>
+                            <Text style={{fontSize: 14}}>
+                                Rp {this.props.produk.harga}
+                            </Text>
                         </View>
                     </View>
 
@@ -126,7 +149,7 @@ class ItemProduk extends Component{
                         <View style={{flexDirection: "row"}}>
                             <TouchableOpacity 
                                 style={{marginRight: 20}}
-                                onPress={this.hapusItem}
+                                onPress={this.hapusItemNotif}
                             >
                                 <Icon
                                     name="trash"

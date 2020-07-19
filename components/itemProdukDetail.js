@@ -4,16 +4,20 @@ import {View, Image, Text, TouchableOpacity} from 'react-native';
 import globalStyles from './utility/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import gambarTelur from '../assets/produk/telur-isi-15.jpg';
+// REDUX
+import {connect} from 'react-redux';
+import actionTypes from '../redux/reducers/actionTypes';
 
-export default class itemProdukDetail extends Component{
+class itemProdukDetail extends Component{
 
     tambahKeKeranjang = () => {
-        alert('ditambahkan ke keranjang');
+        this.props.tambahCart({...this.props.route.params, jumlah: 1});
+
+        this.props.navigation.navigate('cart');
     }
 
     componentDidMount(){
-        console.log(this.props.route.params)
+        //console.log(this.props)
     }
 
     render(){
@@ -39,7 +43,7 @@ export default class itemProdukDetail extends Component{
                     {/* HARGA */}
                     <Text 
                         style={{fontSize: 16, fontWeight: "bold", color: globalStyles.mainColor}}>
-                            {produk.harga}
+                            Rp {produk.harga}
                     </Text>
                 </View>
 
@@ -60,3 +64,21 @@ export default class itemProdukDetail extends Component{
         )
     }
 }
+
+// REDUX
+const mapStateToProps = (state) => {
+    return {
+        cart: state.cart
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        tambahCart: (data) => dispatch({
+            type: actionTypes.ADD_CART,
+            dataProduk: data
+        })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(itemProdukDetail)

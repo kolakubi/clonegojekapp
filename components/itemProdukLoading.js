@@ -13,7 +13,6 @@ export default class ItemProdukLoading extends Component {
             <View 
                 style={{width: "95%", marginBottom: 10, paddingHorizontal: 15, paddingVertical: 10, borderBottomColor: "#fafafa", borderBottomWidth: 0.5, backgroundColor: "#fff", borderRadius: 10, ...globalStyle.shadowBox}}
             >
-
                 <View style={{alignItems: "center", flexDirection: "row"}}>
 
                     {/* THUMBNAIL */}
@@ -26,7 +25,6 @@ export default class ItemProdukLoading extends Component {
                         {/* HARGA */}
                         <View style={{height: 20, width: 90, backgroundColor: componentColor}}></View>
                     </View>
-
                 </View>
                     
                 <View style={{flex: 1, alignItems: "center", justifyContent: "flex-end", flexDirection: "row"}}> 

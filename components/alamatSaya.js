@@ -90,6 +90,7 @@ class AlamatSaya extends Component{
                         key={val.id_alamat}
                         data={val}
                         dipilih={this.dipilih(val.id_alamat)}
+                        navigation={this.props.navigation}
                     />
                 ))}
 
